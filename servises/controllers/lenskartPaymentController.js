@@ -1,6 +1,7 @@
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const dotenv = require('dotenv');
+const nodemailer = require('nodemailer');
 const lenskartPayment = require('../models/lenskartPayment');
 const lenskartCheckout = require('../models/lenskartCheckout')
 dotenv.config();
@@ -92,7 +93,7 @@ const varifyLenskartPayment = async (req, res) => {
     const { CYL: leftCyl, SPH: leftSph } = leftLens || {};
     const { CYL: rightCyl, SPH: rightSph } = rightLens || {};
     const { mobile_number, product_id, selectedColor, productQuntity } = product;
-   
+
     try {
         // Verify Razorpay Signature
         const sign = razorpay_order_id + "|" + razorpay_payment_id;
@@ -132,9 +133,38 @@ const varifyLenskartPayment = async (req, res) => {
                 frem_color: selectedColor.frameColor,
                 lens_color: selectedColor.lensColor,
                 product_quantity: productQuntity,
-                selected_address_id : selectedAddressId,
+                selected_address_id: selectedAddressId,
             }, { transaction });
         });
+
+        // ✅ Send Email After Success
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL_COMPANY, // Your Gmail or SMTP user
+                pass: process.env.EMAIL_PASS  // Your app password or SMTP password
+            }
+        });
+
+        const mailOptions = {
+            from: process.env.EMAIL_COMPANY,
+            to: 'softgenics.sales@gmail.com',  // email passed in `product` from frontend
+            subject: "🛒Payment Successful - Order Confirmation",
+            html: `
+                <h2>New Order Received</h2>
+                <p><strong>Mobile:</strong> ${mobile_number}</p>
+                <p><strong>Product ID:</strong> ${product_id}</p>
+                <p><strong>Product Quantity:</strong> ${productQuntity}</p>
+                <p><strong>Price:</strong> ₹${selectedLensOrProducrPrice}</p>
+                <p><strong>Order ID:</strong> ${razorpay_order_id}</p>
+                <p>Status: <strong>Processing</strong></p>
+                <br/>
+                <p>Please check the dashboard for full details.</p>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+
 
         // Respond to Client
         res.json({ message: "Payment Successfully Verified" });
