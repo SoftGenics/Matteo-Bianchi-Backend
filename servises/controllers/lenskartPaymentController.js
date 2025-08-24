@@ -1,4 +1,5 @@
 const Razorpay = require('razorpay');
+const { Op } = require("sequelize");
 const crypto = require('crypto');
 const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
@@ -174,6 +175,62 @@ const varifyLenskartPayment = async (req, res) => {
     }
 };
 
+// const getLenskartOrderByMobile = async (req, res) => {
+//     const { mobile_number } = req.body;
+
+//     if (!mobile_number) {
+//         return res.status(400).json({ message: "Mobile number is required!" });
+//     }
+
+//     try {
+//         const orders = await lenskartCheckout.findAll({
+//             where: { mobile_number },
+//             order: [['createdAt', 'DESC']]
+//         });
+
+//         if (!orders || orders.length === 0) {
+//             return res.status(404).json({ message: "No orders found for this mobile number." });
+//         }
+
+//         res.status(200).json({ message: "Orders fetched successfully", data: orders });
+//     } catch (error) {
+//         console.error("Error fetching order by mobile number:", error);
+//         res.status(500).json({ message: "Internal Server Error" });
+//     }
+// };
+
+const getLenskartOrderByMobile = async (req, res) => {
+    const { mobile_number } = req.body;
+
+    if (!mobile_number) {
+        return res.status(400).json({ message: "Mobile number is required!" });
+    }
+
+    try {
+        // Get the date exactly 1 year ago from today
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+        const orders = await lenskartCheckout.findAll({
+            where: {
+                mobile_number,
+                createdAt: { [Op.gte]: oneYearAgo } // Filter by last 1 year
+            },
+            order: [['createdAt', 'DESC']]
+        });
+
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ message: "No orders found in the last year for this mobile number." });
+        }
+
+        res.status(200).json({ message: "Orders fetched successfully", data: orders });
+    } catch (error) {
+        console.error("Error fetching order by mobile number:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+
 const paymentDetails = async (req, res) => {
     try {
         const data = await lenskartCheckout.findAll()
@@ -187,8 +244,10 @@ const paymentDetails = async (req, res) => {
     }
 }
 
+
 module.exports = {
     getLenskartPayment,
     varifyLenskartPayment,
+    getLenskartOrderByMobile,
     paymentDetails
 };

@@ -4,5 +4,7 @@ const lenskartPaymentController = require('../controllers/lenskartPaymentControl
 
 router.post('/order', lenskartPaymentController.getLenskartPayment)
 router.post('/verify', lenskartPaymentController.varifyLenskartPayment)
+router.post('/orders', lenskartPaymentController.getLenskartOrderByMobile);
 router.get('/details', lenskartPaymentController.paymentDetails)
+
 module.exports = router;
