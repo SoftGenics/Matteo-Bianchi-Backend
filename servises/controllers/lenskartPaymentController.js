@@ -175,6 +175,44 @@ const varifyLenskartPayment = async (req, res) => {
     }
 };
 
+const updateOrderDetails = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { delivery_status, slug, tracking_number } = req.body;
+        console.log("tracking_number", tracking_number)
+        console.log("slug", slug)
+        console.log("delivery_status", delivery_status)
+
+        const order = await lenskartCheckout.findOne({ where: { id } });
+        if (!order) return res.status(404).json({ message: "Order not found!" });
+
+        await order.update({
+            delivery_status: delivery_status ?? order.delivery_status,
+            slug: slug ?? order.slug,
+            tracking_number: tracking_number ?? order.tracking_number
+        });
+
+        res.json({ message: "Order updated!", order });
+    } catch (err) {
+        res.status(500).json({ message: "Internal Server Error!" });
+    }
+};
+
+const deleteOrderDetails = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deleteOrder = await lenskartCheckout.destroy({ where: { id } })
+        if (!deleteOrder) return res.status(404).json({ massage: "Order not found!" })
+
+        // Respond with a success message
+        res.status(200).json({ message: "Order delete successfully!", id: id })
+    } catch (error) {
+        console.error("Error fetching deleteOrder", error)
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
 // const getLenskartOrderByMobile = async (req, res) => {
 //     const { mobile_number } = req.body;
 
@@ -230,6 +268,28 @@ const getLenskartOrderByMobile = async (req, res) => {
     }
 };
 
+const getLenskartOrderById = async (req, res) => {
+    const { id } = req.params;  // order id URL params se aayega
+
+    if (!id) {
+        return res.status(400).json({ message: "Order ID is required!" });
+    }
+
+    try {
+        const order = await lenskartCheckout.findOne({
+            where: { id }
+        });
+
+        if (!order) {
+            return res.status(404).json({ message: "No order found with this ID." });
+        }
+
+        res.status(200).json({ message: "Order fetched successfully", data: order });
+    } catch (error) {
+        console.error("Error fetching order by ID:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
 
 const paymentDetails = async (req, res) => {
     try {
@@ -248,6 +308,9 @@ const paymentDetails = async (req, res) => {
 module.exports = {
     getLenskartPayment,
     varifyLenskartPayment,
+    updateOrderDetails,
+    deleteOrderDetails,
     getLenskartOrderByMobile,
+    getLenskartOrderById,
     paymentDetails
 };

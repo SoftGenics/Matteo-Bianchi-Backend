@@ -44,13 +44,19 @@ const LenskartCheckout = database.define('LenskartCheckout', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    traking_number: {
+    tracking_number: {
         type: DataTypes.STRING,
         allowNull: true,
+        // defaultValue: "",  // हमेशा empty string से start होगा
     },
     product_id: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    slug: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        // defaultValue: "",  // हमेशा empty string से start होगा
     },
     delivery_status: {
         type: DataTypes.STRING,
@@ -72,7 +78,6 @@ const LenskartCheckout = database.define('LenskartCheckout', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    
     
     paymentId: { // Explicitly defining the foreign key 
         type: DataTypes.INTEGER,

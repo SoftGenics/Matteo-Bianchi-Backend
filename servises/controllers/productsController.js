@@ -272,24 +272,6 @@ const Addproduct = async (req, res) => {
             const videoUrl = videoFile ? `uploads/${videoFile.filename}` : null;
             const videoThumbnailUrl = videoThumbnailFile ? `uploads/${videoThumbnailFile.filename}` : null;
 
-            const colors = req.body.color ? JSON.parse(req.body.color) : []; // Parse JSON input
-
-            // Parse lenshColor as an array
-            // let lenshColor = [];
-            // try {
-            //     lenshColor = Array.isArray(req.body.lenshColor) ? req.body.lenshColor : JSON.parse(req.body.lenshColor);
-            // } catch (error) {
-            //     return res.status(400).json({ message: "Invalid frameColor format" });
-            // }
-
-            // Parse frameColor as an array
-            // let frameColor = [];
-            // try {
-            //     frameColor = Array.isArray(req.body.frameColor) ? req.body.frameColor : JSON.parse(req.body.frameColor);
-            // } catch (error) {
-            //     return res.status(400).json({ message: "Invalid frameColor format" });
-            // }
-
             // Create a new product record in the database
             const data = await products.create({
 
@@ -308,12 +290,10 @@ const Addproduct = async (req, res) => {
                 frame_shape: req.body.frame_shape || '',
                 frem_type: req.body.frem_type || '',
                 gender: req.body.gender || '',
-                color: req.body.color || '',
 
                 // Set rating and discount to null if not provided
                 rating: req.body.rating ? req.body.rating : null,
                 discount: req.body.discount ? req.body.discount : null,
-                color: colors, // Save directly
                 frameColor: req.body.frameColor,
                 lenshColor: req.body.lenshColor,
                 highlights: req.body.highlights || '',
