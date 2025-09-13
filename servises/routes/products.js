@@ -18,12 +18,6 @@ const {userAuth} = require('../middleware/authmiddleware')
 
 const productsController = require('../controllers/productsController')
 
-// route.post('/api/products', upload.fields([{ name: 'image_url', maxCount: 2 }]), productsController.productsData)
-// route.get('/api/products/all', productsController.getAllData)
-// route.get('/api/products/all/filter', productsController.fillterData)
-// route.get('/api/products/:id', productsController.getDataById)
-// route.delete('/api/products/delete/:product_id', productsController.productDeleteById)
-// route.put('/api/products/edit/:id', productsController.editProductById)
 
 route.post('/product/',productsController.Addproduct)
 route.get('/product/',productsController.getproduct)
