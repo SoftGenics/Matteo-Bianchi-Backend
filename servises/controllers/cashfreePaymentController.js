@@ -54,7 +54,7 @@ const cashfreePayment = async (req, res) => {
 };
 
 // =============================
-// ✅ Verify Cashfree Payment
+// ✅ Verify Cashfree Payment Getway
 // =============================
 const cashfreeVerifyPayment = async (req, res) => {
   console.log("Cashfree verify API hit", req.body.orderId);
