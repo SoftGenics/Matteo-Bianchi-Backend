@@ -35,10 +35,16 @@ testDbConnection();
 let PORT = process.env.PORT || 8000;
 
 // Parse JSON-encoded bodies
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 // Parse URL-encoded bodies
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+// Parse JSON-encoded bodies with limit
+app.use(bodyParser.json({ limit: '100mb' }));
+
+// Parse URL-encoded bodies with limit
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 
 // app.use(cors())
 // app.use(cors({
