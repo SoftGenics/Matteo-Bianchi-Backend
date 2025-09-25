@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const crypto = require("crypto");
 const cashfreeModel = require("../models/cashfreeModel");
 
+
 function generateOrderId() {
   return "ORDER_" + crypto.randomBytes(8).toString("hex");
 }
@@ -10,6 +11,7 @@ function generateOrderId() {
 // =========================
 // ✅ Create Cashfree Order
 // =========================
+
 // const cashfreePayment = async (req, res) => {
 //   console.log("Cashfree create order API hit");
 //   const { amount, mobile_number, email } = req.body;
@@ -55,6 +57,127 @@ function generateOrderId() {
 //   }
 // };
 
+
+// ============ cashfree localhost testing =============================
+
+// const cashfreePayment = async (req, res) => {
+//   console.log("Cashfree create order API hit");
+//   const { amount, mobile_number, email } = req.body;
+
+//   if (!amount) {
+//     return res.status(400).json({ message: "Amount is required!" });
+//   }
+
+//   try {
+//     const cf = new Cashfree(
+//       CFEnvironment.SANDBOX, // 👉 PRODUCTION in live
+//       process.env.CASHFREE_APP_ID,
+//       process.env.CASHFREE_SECRET_KEY
+//     );
+
+//     const orderId = generateOrderId();
+
+//     // ✅ Dynamic customer details
+//     const customer_details = {
+//       customer_id: "CUST_" + Date.now(),
+//       ...(email && { customer_email: email }),
+//       ...(mobile_number && { customer_phone: mobile_number }),
+//     };
+
+//     const response = await cf.PGCreateOrder({
+//       order_amount: amount,
+//       order_currency: "INR",
+//       order_id: orderId,
+//       customer_details: customer_details,
+//     });
+
+//     res.json({
+//       order_id: orderId,
+//       payment_session_id: response.data?.payment_session_id,
+//       order_status: response.data?.order_status || null,
+//     });
+//   } catch (err) {
+//     console.error("Create Order Error:", err.response?.data || err.message);
+//     res.status(500).json({
+//       error: "Order creation failed",
+//       detail: err.response?.data || err.message,
+//     });
+//   }
+// };
+
+// const cashfreeVerifyPayment = async (req, res) => {
+//   console.log("Cashfree verify API hit", req.body.orderId);
+
+//   try {
+//     const { checkoutData, selectedAddressId, orderId } = req.body;
+
+//     const { power, product } = checkoutData || {};
+//     if (!power || !product) {
+//       return res.status(400).json({ message: "Invalid checkout data!" });
+//     }
+
+//     const { mobile_number, product_id, productQuntity } = product;
+//     const { selectedLensOrProducrPrice } = power;
+
+//     if (!orderId) {
+//       return res.status(400).json({ error: "orderId is required" });
+//     }
+
+//     const cf = new Cashfree(
+//       CFEnvironment.SANDBOX, // change to PRODUCTION in live
+//       process.env.CASHFREE_APP_ID,
+//       process.env.CASHFREE_SECRET_KEY
+//     );
+
+//     // ✅ Fetch Payment Status
+//     const response = await cf.PGOrderFetchPayments(orderId);
+//     const paymentData = response.data?.[0];
+
+//     if (!paymentData) {
+//       return res.status(404).json({ error: "Payment details not found" });
+//     }
+
+//     // ✅ payment success save in DB 
+//     if (paymentData.payment_status === "SUCCESS") {
+//       const savedCheckout = await cashfreeModel.create({
+//         mobile_number,
+//         product_id,
+//         order_id: orderId,
+//         payment_id: paymentData.cf_payment_id,  // ✅ Save payment_id
+//         selected_Lens_Or_ProductPrice: selectedLensOrProducrPrice,
+//         delivery_status: "Processing",
+//         product_quantity: productQuntity,
+//         selected_address_id: selectedAddressId,
+//       });
+
+//       // ✅ Console both
+//       // console.log("💳 PaymentData from Cashfree:", paymentData);
+//       // console.log("✅ Checkout Saved in DB:", savedCheckout.toJSON());
+
+//       return res.status(200).json({
+//         message: "✅ Payment Verified & Checkout Saved",
+//         paymentData,
+//         checkout: savedCheckout,
+//       });
+//     } else {
+//       console.log("❌ Payment Failed/Not Successful:", paymentData);
+
+//       return res.status(400).json({
+//         message: "❌ Payment not successful",
+//         paymentData,
+//       });
+//     }
+//   } catch (err) {
+//     console.error("Verify Error:", err.response?.data || err.message);
+//     res.status(500).json({
+//       error: "Verification failed",
+//       detail: err.response?.data || err.message,
+//     });
+//   }
+// };
+
+
+// ===================== Cashfree start live payment ===================================
 const cashfreePayment = async (req, res) => {
   console.log("Cashfree create order API hit");
   const { amount, mobile_number, email } = req.body;
@@ -65,7 +188,8 @@ const cashfreePayment = async (req, res) => {
 
   try {
     const cf = new Cashfree(
-      CFEnvironment.SANDBOX, // 👉 PRODUCTION in live
+      // CFEnvironment.SANDBOX, // 👉 PRODUCTION in live
+      CFEnvironment.PRODUCTION,
       process.env.CASHFREE_APP_ID,
       process.env.CASHFREE_SECRET_KEY
     );
@@ -100,10 +224,6 @@ const cashfreePayment = async (req, res) => {
   }
 };
 
-
-// ===================================
-// ✅ Verify Cashfree Payment Getway
-// ===================================
 const cashfreeVerifyPayment = async (req, res) => {
   console.log("Cashfree verify API hit", req.body.orderId);
 
@@ -123,7 +243,8 @@ const cashfreeVerifyPayment = async (req, res) => {
     }
 
     const cf = new Cashfree(
-      CFEnvironment.SANDBOX, // change to PRODUCTION in live
+      // CFEnvironment.SANDBOX, // change to PRODUCTION in live
+      CFEnvironment.PRODUCTION,
       process.env.CASHFREE_APP_ID,
       process.env.CASHFREE_SECRET_KEY
     );
@@ -174,6 +295,7 @@ const cashfreeVerifyPayment = async (req, res) => {
     });
   }
 };
+// ===================== Cashfree start live payment end ===================================
 
 const cashfreeUpdateOrder = async (req, res) => {
   try {
@@ -264,8 +386,6 @@ const cashfreeDetails = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
-
-
 
 module.exports = {
   cashfreePayment,
