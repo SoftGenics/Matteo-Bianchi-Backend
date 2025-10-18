@@ -4,30 +4,30 @@ var bodyParser = require('body-parser')
 
 var cors = require('cors')
 
-const { testDbConnection } = require('./eyewear/connection/database')
+const { testDbConnection } = require('./servises/connection/database')
 const app = express();
 
-const registration = require('./eyewear/routes/registration');
-const carousel = require('./eyewear/routes/carousel');
-const slider = require('./eyewear/routes/slider');
-const products = require('./eyewear/routes/products');
-const categories = require('./eyewear/routes/categories');
-const subCategories = require('./eyewear/routes/subCategories');
-const item = require('./eyewear/routes/item')
-const brand = require('./eyewear/routes/brand')
-const payment = require('./eyewear/routes/payment')
-const address = require('./eyewear/routes/address')
-const specification = require('./eyewear/routes/specification')
-const seller = require('./eyewear/routes/seller')
-const order = require('./eyewear/routes/order')
-const video = require('./eyewear/routes/video')
-const addvideothumnail = require('./eyewear/routes/addvideothumnail')
-const offers = require('./eyewear/routes/offers')
-const review = require('./eyewear/routes/review')
-const color = require('./eyewear/routes/color')
-const lenskartPayment = require('./eyewear/routes/lenskartPayment')
-const trackShipment = require('./eyewear/routes/trackShipment')
-const cashfreePayment = require('./eyewear/routes/cashfreePayment')
+const registration = require('./servises/routes/registration');
+const carousel = require('./servises/routes/eyewearRoutes/carousel');
+const slider = require('./servises/routes/eyewearRoutes/slider');
+const products = require('./servises/routes/eyewearRoutes/products');
+const categories = require('./servises/routes/eyewearRoutes/categories');
+const subCategories = require('./servises/routes/eyewearRoutes/subCategories');
+const item = require('./servises/routes/eyewearRoutes/item')
+const brand = require('./servises/routes/eyewearRoutes/brand')
+const payment = require('./servises/routes/eyewearRoutes/payment')
+const address = require('./servises/routes/address')
+const specification = require('./servises/routes/eyewearRoutes/specification')
+const seller = require('./servises/routes/eyewearRoutes/seller')
+const order = require('./servises/routes/eyewearRoutes/order')
+const video = require('./servises/routes/eyewearRoutes/video')
+const addvideothumnail = require('./servises/routes/eyewearRoutes/addvideothumnail')
+const offers = require('./servises/routes/eyewearRoutes/offers')
+const review = require('./servises/routes/eyewearRoutes/review')
+const color = require('./servises/routes/eyewearRoutes/color')
+const lenskartPayment = require('./servises/routes/eyewearRoutes/lenskartPayment')
+const trackShipment = require('./servises/routes/trackShipment')
+const cashfreePayment = require('./servises/routes/cashfreePayment')
 
 testDbConnection();
 
@@ -114,3 +114,4 @@ app.get('/hello', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server started at https//localhost:${PORT}...`)
 });
+
