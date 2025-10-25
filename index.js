@@ -29,6 +29,10 @@ const lenskartPayment = require('./servises/routes/eyewearRoutes/lenskartPayment
 const trackShipment = require('./servises/routes/trackShipment')
 const cashfreePayment = require('./servises/routes/cashfreePayment')
 
+// Master Product
+const jewellery = require('./servises/routes/jewelleryDetailsRoutes/jewelleryDetailsRoutes')
+
+
 testDbConnection();
 
 let PORT = process.env.PORT || 8000;
@@ -102,9 +106,11 @@ app.use('/', offers)
 app.use('/', review)
 app.use('/', color)
 app.use('/api/payment', lenskartPayment);
-app.use("/api/tracking", trackShipment);
+app.use('/api/tracking', trackShipment);
 app.use('/api', cashfreePayment)
-// Routes
+
+// Master Product Routes
+app.use('/api', jewellery)
 
 app.get('/hello', (req, res) => {
   res.send({ 'message': 'hello user i am here' })

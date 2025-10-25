@@ -15,13 +15,10 @@ const storage = multer.diskStorage({
     },
 });
 
-
-
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 100 * 1024 * 1024 } // 50 MB per file
+    limits: { fileSize: 100 * 1024 * 1024 }
 });
-
 
 const Addproduct = async (req, res) => {
     try {
@@ -35,11 +32,11 @@ const Addproduct = async (req, res) => {
         ])(req, res, async (err) => {
             if (err) {
                 console.error('Multer error:', err);  // यह console में पूरा error दिखाएगा
-                return res.status(400).json({ 
-                    message: 'File upload failed', 
+                return res.status(400).json({
+                    message: 'File upload failed',
                     error: err.message  // यह frontend में भी exact reason दिखाएगा
                 });
-            }            
+            }
 
             // Access the uploaded files via req.files
             const allimages = req.files['product_all_img']
@@ -121,7 +118,8 @@ const Addproduct = async (req, res) => {
             });
 
             return res.json({ message: 'Product added successfully', data: data });
-        });
+        }
+        );
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Internal server error' });

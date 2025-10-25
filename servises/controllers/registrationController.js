@@ -24,7 +24,7 @@ const sendOTP = async (mobile_num, otp) => {
 };
 
 const login = async (req, res) => {
-  const mobile_num  = req.body.mobile_num;
+  const mobile_num = req.body.mobile_num;
   console.log("num", mobile_num)
 
   try {
@@ -85,5 +85,5 @@ const login = async (req, res) => {
 
 
 module.exports = {
-   login
+  login
 }
