@@ -12,11 +12,6 @@ const eyewearDetails = database.define("ProductDetailsEyewear", {
     product_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-            model: allProduct,
-            key: "product_id"
-        },
-        onDelete: "CASCADE"  
     },
     frame_type: {
         type: DataTypes.STRING
@@ -37,8 +32,5 @@ const eyewearDetails = database.define("ProductDetailsEyewear", {
         type: DataTypes.STRING
     }
 });
-
-eyewearDetails.belongsTo(allProduct, { foreignKey: "product_id" });
-allProduct.hasOne(eyewearDetails, { foreignKey: "product_id", onDelete: "CASCADE"});
 
 module.exports = eyewearDetails;
