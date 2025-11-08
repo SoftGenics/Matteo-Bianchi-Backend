@@ -16,6 +16,10 @@ const subCategories = require('./servises/routes/eyewearRoutes/subCategories');
 const item = require('./servises/routes/eyewearRoutes/item')
 const brand = require('./servises/routes/eyewearRoutes/brand')
 const payment = require('./servises/routes/eyewearRoutes/payment')
+const jewellery = require('./servises/routes/jewelleryDetailsRoutes/jewelleryDetailsRoutes')
+const clothings = require('./servises/routes/clothingDetailRoute/clothingDetailRoute')
+const eyewear = require('./servises/routes/eyewearDetailsRoutes/eyewearDetailsRoutes')
+const bags = require('./servises/routes/bagsDetailsRoutes/bagsDetailsRoutes')
 const address = require('./servises/routes/address')
 const specification = require('./servises/routes/eyewearRoutes/specification')
 const seller = require('./servises/routes/eyewearRoutes/seller')
@@ -29,8 +33,6 @@ const lenskartPayment = require('./servises/routes/eyewearRoutes/lenskartPayment
 const trackShipment = require('./servises/routes/trackShipment')
 const cashfreePayment = require('./servises/routes/cashfreePayment')
 
-// Master Product
-const jewellery = require('./servises/routes/jewelleryDetailsRoutes/jewelleryDetailsRoutes')
 
 
 testDbConnection();
@@ -100,6 +102,11 @@ app.use('/', address);
 app.use('/', specification)
 app.use('/', seller)
 app.use('/', order)
+app.use('/api', jewellery)
+app.use('/api', clothings)
+app.use('/api', eyewear)
+app.use('/api', bags)
+
 app.use('/', video)
 app.use('/', addvideothumnail)
 app.use('/', offers)
@@ -109,8 +116,6 @@ app.use('/api/payment', lenskartPayment);
 app.use('/api/tracking', trackShipment);
 app.use('/api', cashfreePayment)
 
-// Master Product Routes
-app.use('/api', jewellery)
 
 app.get('/hello', (req, res) => {
   res.send({ 'message': 'hello user i am here' })
