@@ -16,12 +16,8 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: { fileSize: 100 * 1024 * 1024 },
-}).fields([
-  { name: 'images', maxCount: 10 },
-  { name: 'thumbnail_url', maxCount: 1 },
-  { name: 'video_url', maxCount: 1 },
-  { name: 'video_thumbnail_url', maxCount: 1 },
-]);
+}).fields([{ name: 'images', maxCount: 10 },{ name: 'thumbnail_url', maxCount: 1 }, { name: 'video_url', maxCount: 1 },
+ { name: 'video_thumbnail_url', maxCount: 1 },]);
 
 const addBags = async (req, res) => {
   upload(req, res, async (err) => {

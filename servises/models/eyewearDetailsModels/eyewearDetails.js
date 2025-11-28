@@ -3,7 +3,7 @@ const { database } = require("../../connection/database")
 // const allProduct = require("../allProductModels/allProduct")
 
 
-const eyewearDetails = database.define("ProductDetailsEyewear", {
+const eyewearDetails = database.define("eyewearDetails", {
     product_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -77,7 +77,7 @@ const eyewearDetails = database.define("ProductDetailsEyewear", {
     frame_type: {
         type: DataTypes.STRING
     },
-    frame_material: {
+    material_type: {
         type: DataTypes.STRING
     },
     lens_power: {

@@ -20,6 +20,7 @@ const jewellery = require('./servises/routes/jewelleryDetailsRoutes/jewelleryDet
 const clothings = require('./servises/routes/clothingDetailRoute/clothingDetailRoute')
 const eyewear = require('./servises/routes/eyewearDetailsRoutes/eyewearDetailsRoutes')
 const bags = require('./servises/routes/bagsDetailsRoutes/bagsDetailsRoutes')
+const footwear = require('./servises/routes/footwearDetailsRoutes/footwearDetailsRoutes')
 const address = require('./servises/routes/address')
 const specification = require('./servises/routes/eyewearRoutes/specification')
 const seller = require('./servises/routes/eyewearRoutes/seller')
@@ -32,8 +33,7 @@ const color = require('./servises/routes/eyewearRoutes/color')
 const lenskartPayment = require('./servises/routes/eyewearRoutes/lenskartPayment')
 const trackShipment = require('./servises/routes/trackShipment')
 const cashfreePayment = require('./servises/routes/cashfreePayment')
-
-
+const getAllCetegory = require('./servises/routes/getAllCetegoryRoutes')
 
 testDbConnection();
 
@@ -106,7 +106,9 @@ app.use('/api', jewellery)
 app.use('/api', clothings)
 app.use('/api', eyewear)
 app.use('/api', bags)
+app.use('/api', footwear)
 
+app.use('/api', getAllCetegory)
 app.use('/', video)
 app.use('/', addvideothumnail)
 app.use('/', offers)

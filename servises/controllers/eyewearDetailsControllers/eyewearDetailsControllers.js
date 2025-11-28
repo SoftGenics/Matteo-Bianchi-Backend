@@ -65,7 +65,7 @@ const addEyewear = async (req, res) => {
                 total_reviews: req.body.total_reviews,
 
                 frame_type: req.body.frame_type,
-                frame_material: req.body.frame_material,
+                material_type: req.body.material_type,
                 lens_power: req.body.lens_power,
                 lens_type: req.body.lens_type,
                 size_type: req.body.size_type,
@@ -161,8 +161,7 @@ const deleteEyewear = async (req, res) => {
 
 const updateEyewear = async (req, res) => {
     const { product_id } = req.params
-    upload.fields([{ name: "images", maxCount: 10 }, { name: "thumbnail_url", maxCount: 1 }, { name: "video_url", maxCount: 1 },
-    { name: "video_thumbnail_url", maxCount: 1 },])(req, res, async (err) => {
+    upload(req, res, async (err) => {
         if (err) {
             console.error("Multer error:", err);
             return res.status(400).json({
@@ -177,7 +176,7 @@ const updateEyewear = async (req, res) => {
                 }
             });
             if (!eyewear) {
-                return res.status(404).json({ message: "Jewellery product not found." });
+                return res.status(404).json({ message: "eyewear product not found." });
             }
             const allimages = req.files["images"];
             const thumbnailImage = req.files['thumbnail_url']?.[0];
@@ -204,9 +203,9 @@ const updateEyewear = async (req, res) => {
                     fs.unlinkSync(path.resolve(oldPath));
                 }
             };
-            deleteFileIfReplaced(jewellery.thumbnail_url, thumbnail_url);
-            deleteFileIfReplaced(jewellery.video_url, video_url);
-            deleteFileIfReplaced(jewellery.video_thumbnail_url, video_thumbnail_url);
+            deleteFileIfReplaced(eyewear.thumbnail_url, thumbnail_url);
+            deleteFileIfReplaced(eyewear.video_url, video_url);
+            deleteFileIfReplaced(eyewear.video_thumbnail_url, video_thumbnail_url);
 
             await eyewear.update({
                 main_category: req.body.main_category || eyewear.main_category,
@@ -226,12 +225,12 @@ const updateEyewear = async (req, res) => {
                 stock_status: req.body.stock_status || eyewear.stock_status,
                 rating: req.body.rating || eyewear.rating,
                 total_reviews: req.body.total_reviews || eyewear.total_reviews,
-                frame_type: req.body.frame_type || eyewear.material_type,
-                frame_material: req.body.frame_material || eyewear.material_type,
-                lens_power: req.body.lens_power || eyewear.material_type,
-                lens_type: req.body.lens_type || eyewear.material_type,
-                size_type: req.body.size_type || eyewear.material_type,
-                same_color_type: req.body.same_color_type || eyewear.material_type,
+                frame_type: req.body.frame_type || eyewear.frame_type,
+                material_type: req.body.material_type || eyewear.material_type,
+                lens_power: req.body.lens_power || eyewear.lens_power,
+                lens_type: req.body.lens_type || eyewear.lens_type,
+                size_type: req.body.size_type || eyewear.size_type,
+                same_color_type: req.body.same_color_type || eyewear.same_color_type,
             })
 
             return res.status(200).json({
