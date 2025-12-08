@@ -235,7 +235,7 @@ const cashfreeVerifyPayment = async (req, res) => {
       return res.status(400).json({ message: "Invalid checkout data!" });
     }
 
-    const { mobile_number, product_id, productQuntity } = product;
+    const { mobile_number, product_id, main_category, productQuntity } = product;
     const { selectedLensOrProducrPrice } = power;
 
     if (!orderId) {
@@ -262,6 +262,7 @@ const cashfreeVerifyPayment = async (req, res) => {
       const savedCheckout = await cashfreeModel.create({
         mobile_number,
         product_id,
+        main_category,
         order_id: orderId,
         payment_id: paymentData.cf_payment_id,  // ✅ Save payment_id
         selected_Lens_Or_ProductPrice: selectedLensOrProducrPrice,

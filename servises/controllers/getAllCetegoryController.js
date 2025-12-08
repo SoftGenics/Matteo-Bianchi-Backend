@@ -114,16 +114,15 @@ exports.getAllCetegory = async (req, res) => {
 };
 
 exports.getSingleProduct = async (req, res) => {
-    const modelMap = {
-        eyewear: Eyewear, jewellery: Jewellery, clothings: Clothing, footwear: Footwear,
-        purse: Purse,
+    const modelMap = { eyewear: Eyewear, jewellery: Jewellery, clothings: Clothing,
+        footwear: Footwear, purse: Purse,
     };
 
     try {
         let { category, product_id } = req.params;
         category = category.toLowerCase();
 
-        // 🔍 Validate category
+        // Validate category
         if (!modelMap[category]) {
             return res.status(400).json({
                 message: "Invalid category",
@@ -132,6 +131,8 @@ exports.getSingleProduct = async (req, res) => {
         }
 
         const Model = modelMap[category];
+
+        // --------- Step 1: Fetch Single Product ----------
         const product = await Model.findOne({ where: { product_id } });
 
         if (!product) {
@@ -142,9 +143,29 @@ exports.getSingleProduct = async (req, res) => {
             });
         }
 
+        // --------- Step 2: Fetch Suggested Products ----------
+        let suggestedProducts = await Model.findAll({
+            where: {
+                product_id: { [Op.ne]: product_id }, // exclude current product
+                main_category: product.main_category // same category suggestion
+            },
+            limit: 4
+        });
+
+        // --------- Step 3: If no suggestions, fetch random 4 products ----------
+        if (!suggestedProducts || suggestedProducts.length === 0) {
+            suggestedProducts = await Model.findAll({
+                where: { product_id: { [Op.ne]: product_id } },
+                limit: 4,
+                order: Sequelize.literal('RAND()')  // MySQL only
+            });
+        }
+
+        // Final Response
         return res.status(200).json({
             message: "Product fetched successfully",
             data: product,
+            suggestedProducts
         });
 
     } catch (error) {

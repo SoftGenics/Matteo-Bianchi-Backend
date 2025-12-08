@@ -10,6 +10,10 @@ const Cashfree = database.define('Cashfree', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    main_category: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     product_id: {
         type: DataTypes.STRING,
         allowNull: false,
