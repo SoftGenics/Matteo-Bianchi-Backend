@@ -26,6 +26,7 @@ CREATE TABLE `Cashfrees` (
   `id` int NOT NULL AUTO_INCREMENT,
   `mobile_number` varchar(255) NOT NULL,
   `tracking_number` varchar(255) DEFAULT NULL,
+  `main_category` varchar(45) DEFAULT NULL,
   `product_id` varchar(255) NOT NULL,
   `order_id` varchar(255) NOT NULL,
   `payment_id` varchar(255) DEFAULT NULL,
@@ -37,7 +38,7 @@ CREATE TABLE `Cashfrees` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +47,7 @@ CREATE TABLE `Cashfrees` (
 
 LOCK TABLES `Cashfrees` WRITE;
 /*!40000 ALTER TABLE `Cashfrees` DISABLE KEYS */;
-INSERT INTO `Cashfrees` VALUES (1,'9110189245',NULL,'88','ORDER_5f608247a1176238','5114920711256',120,NULL,'Processing','1','46','2025-09-16 16:11:36','2025-09-16 16:11:36'),(2,'9110189245',NULL,'88','ORDER_7c083e0e0a15dda1','5114920711295',120,NULL,'Processing','1','46','2025-09-16 16:16:28','2025-09-16 16:16:28'),(3,'9110189245',NULL,'88','ORDER_d258334312bf1747','5114920711339',120,NULL,'Processing','1','46','2025-09-16 16:23:52','2025-09-16 16:23:52'),(4,'9110189245',NULL,'88','ORDER_0fc455b0c42f219a','5114920711397',120,NULL,'Processing','1','46','2025-09-16 16:41:06','2025-09-16 16:41:06'),(5,'9110189245',NULL,'78','ORDER_4576743d32072f52','5114920712025',1840,NULL,'Processing','1',NULL,'2025-09-16 17:50:57','2025-09-16 17:50:57'),(6,'9110189245',NULL,'88','ORDER_6f8c471b8cca7b37','5114920740759',478,NULL,'Processing','4','46','2025-09-17 13:40:20','2025-09-17 13:40:20'),(7,'9110189245','7D155069823','88','ORDER_55d96ff86d4d7d4d','5114920742655',478,'dtdc','Processing','4','46','2025-09-17 18:04:45','2025-09-18 13:23:35');
+INSERT INTO `Cashfrees` VALUES (1,'9110189245',NULL,NULL,'88','ORDER_5f608247a1176238','5114920711256',120,NULL,'Processing','1','46','2025-09-16 16:11:36','2025-09-16 16:11:36'),(2,'9110189245',NULL,NULL,'88','ORDER_7c083e0e0a15dda1','5114920711295',120,NULL,'Processing','1','46','2025-09-16 16:16:28','2025-09-16 16:16:28'),(3,'9110189245',NULL,NULL,'88','ORDER_d258334312bf1747','5114920711339',120,NULL,'Processing','1','46','2025-09-16 16:23:52','2025-09-16 16:23:52'),(4,'9110189245',NULL,NULL,'88','ORDER_0fc455b0c42f219a','5114920711397',120,NULL,'Processing','1','46','2025-09-16 16:41:06','2025-09-16 16:41:06'),(5,'9110189245',NULL,NULL,'78','ORDER_4576743d32072f52','5114920712025',1840,NULL,'Processing','1',NULL,'2025-09-16 17:50:57','2025-09-16 17:50:57'),(6,'9110189245',NULL,NULL,'88','ORDER_6f8c471b8cca7b37','5114920740759',478,NULL,'Processing','4','46','2025-09-17 13:40:20','2025-09-17 13:40:20'),(7,'9110189245','7D155069823',NULL,'88','ORDER_55d96ff86d4d7d4d','5114920742655',478,'dtdc','Processing','4','46','2025-09-17 18:04:45','2025-09-18 13:23:35'),(8,'9110189245',NULL,NULL,'45','ORDER_9c123316f2d5fb84','4384306892',1,NULL,'Processing','1','67','2025-09-25 10:12:24','2025-09-25 10:12:24');
 /*!40000 ALTER TABLE `Cashfrees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,7 +203,7 @@ CREATE TABLE `address` (
   PRIMARY KEY (`addresses_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `registrations` (`user_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,8 +212,55 @@ CREATE TABLE `address` (
 
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
-INSERT INTO `address` VALUES (43,804453,'parsa','Bihar','00','patna parsa1','parsa','Raj Choudhary',9110189280,'home',3,'2024-11-30 17:11:13','2024-12-31 16:12:39'),(44,804453,'parsa','Bihar','00','patna patna','parsa','Raj Choudhary',9110189280,'home',3,'2024-11-30 17:11:46','2024-11-30 17:11:46'),(45,804453,'parsa','Bihar','00','patna patna','parsa','Raj Choudhary',9110189280,'home',3,'2024-11-30 17:11:50','2024-11-30 17:11:50'),(46,804453,'parsa 1','Bihar','00','patna','01','Raj Choudhary',9110189245,'home',2,'2024-12-16 11:58:21','2025-04-14 16:13:02'),(47,804453,'parsa','Bihar','00','patna parsa1','parsa','Raj Choudhary',9110189280,'home',3,'2025-04-17 12:16:56','2025-04-17 12:16:56'),(49,804453,'parsa','Bihar','00','patna','01','Raj Choudhary ji',9110189280,'home',3,'2025-04-17 12:25:31','2025-04-17 12:25:31'),(50,804453,'parsa','Bihar','00','patna','01','Raj Choudhary ji',9110189280,'home',3,'2025-04-17 12:25:46','2025-04-17 12:25:46'),(51,804453,'parsa','Bihar','00','patna','01','Raj Choudhary ji',9110189280,'home',3,'2025-04-17 12:29:46','2025-04-17 12:29:46'),(58,804453,'parsa','Bihar','00','patna','01','Raj Choudhary',9110189280,'home',3,'2025-04-19 17:23:28','2025-04-19 17:23:28'),(59,804453,'parsa','Bihar','00','patna','01','Raj Choudhary',9110189280,'work',3,'2025-04-19 18:22:48','2025-04-19 18:22:48'),(60,804453,'parsa','Bihar','00','patna','parsa','mahima kumari',9110189245,'home',2,'2025-08-14 16:41:38','2025-08-14 16:41:38'),(67,804453,'parsa','Bihar','EE','patna','parsa','Raj Choudhary',9110189245,'home',2,'2025-09-17 15:32:47','2025-09-17 15:32:47'),(68,804453,'parsa','Bihar','00','patna','parsa','abhi kumar',9110189245,'home',2,'2025-09-17 18:02:37','2025-09-17 18:02:37');
+INSERT INTO `address` VALUES (43,804453,'parsa','Bihar','00','patna parsa1','parsa','Raj Choudhary',9110189280,'home',3,'2024-11-30 17:11:13','2024-12-31 16:12:39'),(44,804453,'parsa','Bihar','00','patna patna','parsa','Raj Choudhary',9110189280,'home',3,'2024-11-30 17:11:46','2024-11-30 17:11:46'),(45,804453,'parsa','Bihar','00','patna patna','parsa','Raj Choudhary',9110189280,'home',3,'2024-11-30 17:11:50','2024-11-30 17:11:50'),(46,804453,'parsa 1','Bihar','00','patna','01','Raj Choudhary',9110189245,'home',2,'2024-12-16 11:58:21','2025-04-14 16:13:02'),(47,804453,'parsa','Bihar','00','patna parsa1','parsa','Raj Choudhary',9110189280,'home',3,'2025-04-17 12:16:56','2025-04-17 12:16:56'),(49,804453,'parsa','Bihar','00','patna','01','Raj Choudhary ji',9110189280,'home',3,'2025-04-17 12:25:31','2025-04-17 12:25:31'),(50,804453,'parsa','Bihar','00','patna','01','Raj Choudhary ji',9110189280,'home',3,'2025-04-17 12:25:46','2025-04-17 12:25:46'),(51,804453,'parsa','Bihar','00','patna','01','Raj Choudhary ji',9110189280,'home',3,'2025-04-17 12:29:46','2025-04-17 12:29:46'),(58,804453,'parsa','Bihar','00','patna','01','Raj Choudhary',9110189280,'home',3,'2025-04-19 17:23:28','2025-04-19 17:23:28'),(59,804453,'parsa','Bihar','00','patna','01','Raj Choudhary',9110189280,'work',3,'2025-04-19 18:22:48','2025-04-19 18:22:48'),(60,804453,'parsa','Bihar','00','patna','parsa','mahima kumari',9110189245,'home',2,'2025-08-14 16:41:38','2025-08-14 16:41:38'),(67,804453,'parsa','Bihar','EE','patna','parsa','Raj Choudhary',9110189245,'home',2,'2025-09-17 15:32:47','2025-09-17 15:32:47'),(68,804453,'parsa','Bihar','00','patna','parsa','abhi kumar',9110189245,'home',2,'2025-09-17 18:02:37','2025-09-17 18:02:37'),(69,804453,'patna','bihar','02','patna','01','raju',9110189245,'home',2,'2026-01-12 14:18:49','2026-01-12 14:18:49');
 /*!40000 ALTER TABLE `address` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bagsDetails`
+--
+
+DROP TABLE IF EXISTS `bagsDetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bagsDetails` (
+  `product_id` int NOT NULL AUTO_INCREMENT,
+  `main_category` varchar(255) NOT NULL,
+  `sub_category` varchar(255) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_type` varchar(255) NOT NULL,
+  `product_variant` varchar(255) NOT NULL,
+  `brand_name` varchar(255) NOT NULL,
+  `color` varchar(255) NOT NULL,
+  `price` float NOT NULL,
+  `discount_percent` float NOT NULL,
+  `description` text NOT NULL,
+  `images` json NOT NULL,
+  `thumbnail_url` varchar(255) NOT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
+  `video_thumbnail_url` varchar(255) DEFAULT NULL,
+  `stock_status` varchar(255) NOT NULL,
+  `rating` float DEFAULT NULL,
+  `total_reviews` int DEFAULT NULL,
+  `material_type` varchar(255) NOT NULL,
+  `size_type` varchar(255) NOT NULL,
+  `pattern_type` varchar(255) NOT NULL,
+  `closure_type` varchar(255) NOT NULL,
+  `same_color_type` varchar(255) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bagsDetails`
+--
+
+LOCK TABLES `bagsDetails` WRITE;
+/*!40000 ALTER TABLE `bagsDetails` DISABLE KEYS */;
+INSERT INTO `bagsDetails` VALUES (1,'purse','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',2000,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763030174885-handbag-1478814_1280.jpg\", \"uploads/1763030174886-hangers-1850082_1280.jpg\", \"uploads/1763030174887-360_F_197422899_N0mELNNZaFzosecqaD2bQA50egRcjMMw.jpg\", \"uploads/1763030174888-360_F_755448613_6EfbBonaIOncdfdqrjgJ6WGIpAUWacXn.jpg\"]','uploads/1763030174889-bag-1868758_1280.jpg','uploads/1762423233796-Matteo Bianchi.mp4','uploads/1762423233841-thumbnail.png','5',4.7,150,'lager','Green-Plated Brass','Pearl','200gm','Green Plated Brass','2025-11-06 10:00:33','2025-11-13 10:36:14'),(2,'purse','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',2000,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763030179668-handbag-1478814_1280.jpg\", \"uploads/1763030179670-hangers-1850082_1280.jpg\", \"uploads/1763030179672-360_F_197422899_N0mELNNZaFzosecqaD2bQA50egRcjMMw.jpg\", \"uploads/1763030179673-360_F_755448613_6EfbBonaIOncdfdqrjgJ6WGIpAUWacXn.jpg\"]','uploads/1763030179673-bag-1868758_1280.jpg','uploads/1762423241278-Matteo Bianchi.mp4','uploads/1762423241296-thumbnail.png','5',4.7,150,'lager','Green-Plated Brass','Pearl','200gm','Green Plated Brass','2025-11-06 10:00:41','2025-11-13 10:36:19'),(3,'purse','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl1','Tanishq1','Blue',2000,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[]','uploads/1763030163727-bag-1868758_1280.jpg','uploads/1762431310914-Matteo Bianchi.mp4','uploads/1762431310979-thumbnail.png','6',4.7,150,'lager','Green-Plated Brass','Pearl','200gm','Green Plated Brass','2025-11-06 12:15:10','2026-02-02 13:00:03');
+/*!40000 ALTER TABLE `bagsDetails` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -361,6 +409,55 @@ INSERT INTO `cetegories` VALUES (1,'Power Glasses','2025-03-19 16:01:11','2025-0
 UNLOCK TABLES;
 
 --
+-- Table structure for table `clothingDetails`
+--
+
+DROP TABLE IF EXISTS `clothingDetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `clothingDetails` (
+  `product_id` int NOT NULL AUTO_INCREMENT,
+  `main_category` varchar(255) NOT NULL,
+  `sub_category` varchar(255) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_type` varchar(255) NOT NULL,
+  `product_variant` varchar(255) NOT NULL,
+  `brand_name` varchar(255) NOT NULL,
+  `color` varchar(255) NOT NULL,
+  `price` float NOT NULL,
+  `discount_percent` float NOT NULL,
+  `description` text NOT NULL,
+  `images` json NOT NULL,
+  `thumbnail_url` varchar(255) NOT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
+  `video_thumbnail_url` varchar(255) DEFAULT NULL,
+  `stock_status` varchar(255) NOT NULL,
+  `rating` float DEFAULT NULL,
+  `total_reviews` int DEFAULT NULL,
+  `size` json NOT NULL,
+  `material_type` varchar(255) NOT NULL,
+  `fabric_type` varchar(255) NOT NULL,
+  `fit_type` varchar(255) NOT NULL,
+  `pattern_type` varchar(255) NOT NULL,
+  `same_color_type` varchar(255) NOT NULL,
+  `care_instructions` text NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clothingDetails`
+--
+
+LOCK TABLES `clothingDetails` WRITE;
+/*!40000 ALTER TABLE `clothingDetails` DISABLE KEYS */;
+INSERT INTO `clothingDetails` VALUES (1,'clothings','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',1500,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763548291240-1.png\", \"uploads/1763548291279-2.png\", \"uploads/1763548291300-8.png\", \"uploads/1763548291317-4.png\"]','uploads/1763548291415-hangers-1850082_1280.jpg','uploads/1763548291417-Matteo Bianchi.mp4','uploads/1763548291450-thumbnail.png','5',4.7,150,'[\"S\", \"M\", \"L\", \"XL\"]','lager','denim','regular','Pearl','Green Plated Brass','Brass','2025-11-18 11:48:14','2025-11-19 10:31:31'),(2,'clothings','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',1500,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763548299558-1.png\", \"uploads/1763548299573-2.png\", \"uploads/1763548299596-8.png\", \"uploads/1763548299608-4.png\"]','uploads/1763548299682-hangers-1850082_1280.jpg','uploads/1763548299684-Matteo Bianchi.mp4','uploads/1763548299704-thumbnail.png','5',4.7,150,'[\"S\", \"M\", \"L\", \"XL\"]','lager','denim','regular','Pearl','Green Plated Brass','Brass','2025-11-18 11:49:12','2025-11-19 10:31:39');
+/*!40000 ALTER TABLE `clothingDetails` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `colors`
 --
 
@@ -384,6 +481,102 @@ CREATE TABLE `colors` (
 LOCK TABLES `colors` WRITE;
 /*!40000 ALTER TABLE `colors` DISABLE KEYS */;
 /*!40000 ALTER TABLE `colors` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `eyewearDetails`
+--
+
+DROP TABLE IF EXISTS `eyewearDetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `eyewearDetails` (
+  `product_id` int NOT NULL AUTO_INCREMENT,
+  `main_category` varchar(255) NOT NULL,
+  `sub_category` varchar(255) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_type` varchar(255) NOT NULL,
+  `product_variant` varchar(255) NOT NULL,
+  `brand_name` varchar(255) NOT NULL,
+  `color` varchar(255) NOT NULL,
+  `price` float NOT NULL,
+  `discount_percent` float NOT NULL,
+  `description` text NOT NULL,
+  `images` json NOT NULL,
+  `thumbnail_url` varchar(255) NOT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
+  `video_thumbnail_url` varchar(255) DEFAULT NULL,
+  `stock_status` varchar(255) NOT NULL,
+  `rating` float DEFAULT NULL,
+  `total_reviews` int DEFAULT NULL,
+  `frame_type` varchar(255) DEFAULT NULL,
+  `material_type` varchar(255) DEFAULT NULL,
+  `lens_power` varchar(255) DEFAULT NULL,
+  `lens_type` varchar(255) DEFAULT NULL,
+  `size_type` varchar(255) DEFAULT NULL,
+  `same_color_type` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `eyewearDetails`
+--
+
+LOCK TABLES `eyewearDetails` WRITE;
+/*!40000 ALTER TABLE `eyewearDetails` DISABLE KEYS */;
+INSERT INTO `eyewearDetails` VALUES (1,'Eyewear','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',1500,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763229053782-1.png\", \"uploads/1763229053803-2.png\", \"uploads/1763229053838-8.png\", \"uploads/1763229053857-4.png\"]','uploads/1763229053956-6.png','uploads/1763229054037-Matteo Bianchi.mp4','uploads/1763229054070-thumbnail.png','5',4.7,150,NULL,'fiber',NULL,NULL,'Green-Plated Brass','Green Plated Brass','2025-11-15 17:50:54','2025-11-15 17:50:54'),(2,'Eyewear','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',1500,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763229059342-1.png\", \"uploads/1763229059356-2.png\", \"uploads/1763229059374-8.png\", \"uploads/1763229059397-4.png\"]','uploads/1763229059487-6.png','uploads/1763229059544-Matteo Bianchi.mp4','uploads/1763229059595-thumbnail.png','5',4.7,150,NULL,'fiber',NULL,NULL,'Green-Plated Brass','Green Plated Brass','2025-11-15 17:50:59','2025-11-15 17:50:59'),(3,'Eyewear','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',1500,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763644126340-1.png\", \"uploads/1763644126360-2.png\", \"uploads/1763644126382-8.png\", \"uploads/1763644126411-4.png\"]','uploads/1763644126502-8[1] (1).jpg','uploads/1763644126502-Matteo Bianchi.mp4','uploads/1763644126526-thumbnail.png','5',4.7,150,NULL,'fiber',NULL,NULL,'Green-Plated Brass','Green Plated Brass','2025-11-20 13:08:46','2025-11-20 13:20:24'),(4,'Eyewear','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',1500,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763644223545-1.png\", \"uploads/1763644223563-2.png\", \"uploads/1763644223592-8.png\", \"uploads/1763644223640-4.png\"]','uploads/1763644223733-8[1] (1).jpg','uploads/1763644223738-Matteo Bianchi.mp4','uploads/1763644223756-thumbnail.png','5',4.7,150,NULL,'fiber',NULL,NULL,'Green-Plated Brass','Green Plated Brass','2025-11-20 13:10:23','2025-11-20 13:20:46'),(5,'Eyewear','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',1500,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763644315733-1.png\", \"uploads/1763644315752-2.png\", \"uploads/1763644315776-8.png\", \"uploads/1763644315790-4.png\"]','uploads/1763644315849-8[1] (1).jpg','uploads/1763644315849-Matteo Bianchi.mp4','uploads/1763644315874-thumbnail.png','5',4.7,150,NULL,'fiber',NULL,NULL,'Green-Plated Brass','Green Plated Brass','2025-11-20 13:11:55','2025-11-20 13:20:51');
+/*!40000 ALTER TABLE `eyewearDetails` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `footwearDetails`
+--
+
+DROP TABLE IF EXISTS `footwearDetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `footwearDetails` (
+  `product_id` int NOT NULL AUTO_INCREMENT,
+  `main_category` varchar(255) NOT NULL,
+  `sub_category` varchar(255) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_type` varchar(255) NOT NULL,
+  `product_variant` varchar(255) NOT NULL,
+  `brand_name` varchar(255) NOT NULL,
+  `color` varchar(255) NOT NULL,
+  `price` float NOT NULL,
+  `discount_percent` float NOT NULL,
+  `description` text NOT NULL,
+  `images` json NOT NULL,
+  `thumbnail_url` varchar(255) NOT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
+  `video_thumbnail_url` varchar(255) DEFAULT NULL,
+  `stock_status` varchar(255) NOT NULL,
+  `rating` float DEFAULT NULL,
+  `total_reviews` int DEFAULT NULL,
+  `material_type` varchar(255) NOT NULL,
+  `sole_type` varchar(255) NOT NULL,
+  `size_type` varchar(255) NOT NULL,
+  `closure_type` varchar(255) NOT NULL,
+  `same_color_type` varchar(255) NOT NULL,
+  `heel_height` varchar(255) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `footwearDetails`
+--
+
+LOCK TABLES `footwearDetails` WRITE;
+/*!40000 ALTER TABLE `footwearDetails` DISABLE KEYS */;
+INSERT INTO `footwearDetails` VALUES (1,'footwear','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',800,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763646341174-360_F_197422899_N0mELNNZaFzosecqaD2bQA50egRcjMMw.jpg\", \"uploads/1763646341176-handbag-1478814_1280.jpg\", \"uploads/1763646341178-hangers-1850082_1280.jpg\", \"uploads/1763646341179-360_F_755448613_6EfbBonaIOncdfdqrjgJ6WGIpAUWacXn.jpg\"]','uploads/1763646341180-360_F_197422899_N0mELNNZaFzosecqaD2bQA50egRcjMMw.jpg','uploads/1763646341180-Matteo Bianchi.mp4','uploads/1763646341197-thumbnail.png','5',4.7,150,'leder','djnksj','Green-Plated Brass','zip','Green Plated Brass','hkkja','2025-11-20 13:45:41','2025-11-20 13:45:41'),(2,'footwear','Women','Blue-Plated Pearl Necklace Set','Traditional','Blue Pearl','Tanishq','Blue',800,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1763646380488-360_F_197422899_N0mELNNZaFzosecqaD2bQA50egRcjMMw.jpg\", \"uploads/1763646380488-handbag-1478814_1280.jpg\", \"uploads/1763646380489-hangers-1850082_1280.jpg\", \"uploads/1763646380490-360_F_755448613_6EfbBonaIOncdfdqrjgJ6WGIpAUWacXn.jpg\"]','uploads/1763646380492-360_F_197422899_N0mELNNZaFzosecqaD2bQA50egRcjMMw.jpg','uploads/1763646380492-Matteo Bianchi.mp4','uploads/1763646380515-thumbnail.png','5',4.7,150,'leder','djnksj','Green-Plated Brass','zip','Green Plated Brass','hkkja','2025-11-20 13:46:20','2025-11-20 13:46:20');
+/*!40000 ALTER TABLE `footwearDetails` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -412,6 +605,52 @@ LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
 INSERT INTO `items` VALUES (1,'Face Makeup','Primer',1,'2023-09-26 09:38:02','2023-09-26 09:38:02'),(2,'Face Makeup','Conclear',2,'2023-09-26 09:38:58','2023-09-26 09:38:58'),(3,'Face Makeup','Compact',3,'2023-09-26 09:39:32','2023-09-26 09:39:32'),(4,'Face Makeup','Bluce',4,'2023-09-26 09:39:55','2023-09-26 09:39:55'),(5,'Eyes Makeup','Eye liner',5,'2023-09-26 09:42:01','2023-09-26 09:42:01'),(6,'Eyes Makeup','Eye shadow',6,'2023-09-26 09:47:29','2023-09-26 09:47:29'),(7,'Eyes Makeup','Kajal',7,'2023-09-26 09:48:09','2023-09-26 09:48:09'),(9,'Clensers','Fashwas',14,'2023-09-27 09:00:25','2023-09-27 09:00:25'),(10,'Clensers','Clenser',15,'2023-09-27 09:00:45','2023-09-27 09:00:45'),(11,'Clensers','Facial',16,'2023-09-27 09:01:18','2023-09-27 09:01:18'),(12,'Marks','Sheet Marks',17,'2023-09-27 09:02:18','2023-09-27 09:02:18'),(13,'Marks','Face Marks',18,'2023-09-27 09:02:32','2023-09-27 09:02:32'),(16,'Marks','Face Marks1',22,'2023-11-29 09:57:20','2023-11-29 09:57:20');
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jewelleryDetails`
+--
+
+DROP TABLE IF EXISTS `jewelleryDetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `jewelleryDetails` (
+  `product_id` int NOT NULL AUTO_INCREMENT,
+  `main_category` varchar(255) NOT NULL,
+  `sub_category` varchar(255) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_type` varchar(255) NOT NULL,
+  `product_variant` varchar(255) NOT NULL,
+  `brand_name` varchar(255) NOT NULL,
+  `color` varchar(255) NOT NULL,
+  `price` float NOT NULL,
+  `discount_percent` float NOT NULL,
+  `description` text NOT NULL,
+  `images` json NOT NULL,
+  `thumbnail_url` varchar(255) NOT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
+  `video_thumbnail_url` varchar(255) DEFAULT NULL,
+  `stock_status` varchar(255) NOT NULL,
+  `rating` float DEFAULT NULL,
+  `total_reviews` int DEFAULT NULL,
+  `material_type` varchar(255) DEFAULT NULL,
+  `stone_type` varchar(255) DEFAULT NULL,
+  `weight` varchar(255) DEFAULT NULL,
+  `same_color_type` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jewelleryDetails`
+--
+
+LOCK TABLES `jewelleryDetails` WRITE;
+/*!40000 ALTER TABLE `jewelleryDetails` DISABLE KEYS */;
+INSERT INTO `jewelleryDetails` VALUES (1,'Jewellery','Women','Green-Plated Pearl Necklace Set','Green-Plated Pearl Necklace Set','Golden Pearl','Tanishq','Green',2500,30,'This elegant traditional necklace set is crafted with gold-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1761738314341-12.png\", \"uploads/1761738314356-13.png\", \"uploads/1761738314365-14.png\", \"uploads/1761738314380-Gemini_Generated_Image_54s7b054s7b054s7.png\", \"uploads/1761738314389-Gemini_Generated_Image_597wwu597wwu597w.png\", \"uploads/1761738314403-Gemini_Generated_Image_6jhamt6jhamt6jha.png\", \"uploads/1761738314423-Gemini_Generated_Image_54s7b054s7b054s7 (1).png\", \"uploads/1761738314436-Gemini_Generated_Image_d4mv3cd4mv3cd4mv.png\", \"uploads/1761738314454-Gemini_Generated_Image_q5vcv2q5vcv2q5vc.png\"]','uploads/1761738314465-12.png','uploads/1761738314471-Matteo Bianchi.mp4','uploads/1761738314493-thumbnail.png','5',4.7,150,'Green-Plated Brass','Pearl','100gm','Green Plated Brass','2025-10-29 11:45:14','2025-10-29 11:45:14'),(2,'Jewellery','Women','Blue-Plated Pearl Necklace Set','Blue-Plated Pearl Necklace Set','Blue Pearl','Tanishq','Blue',2000,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1761739273041-37.png\", \"uploads/1761739273050-39.png\", \"uploads/1761739273055-38.png\", \"uploads/1761739273063-40.png\", \"uploads/1761739273071-Gemini_Generated_Image_2fhau82fhau82fha.png\", \"uploads/1761739273081-Gemini_Generated_Image_8dmyjj8dmyjj8dmy.png\", \"uploads/1761739273106-Gemini_Generated_Image_zbo2tmzbo2tmzbo2.png\", \"uploads/1761739273120-Gemini_Generated_Image_hyfcdkhyfcdkhyfc.png\"]','uploads/1761739273138-37.png','uploads/1761739273150-Matteo Bianchi.mp4','uploads/1761739273185-thumbnail.png','5',4.7,150,'Blue-Plated Brass','Pearl','100gm','Green Plated Brass','2025-10-29 12:01:13','2025-10-29 12:01:13'),(8,'Jewellery','Women','Blue-Plated Pearl Necklace Set','Blue-Plated Pearl Necklace Set','Blue Pearl','Tanishq','Blue',2000,20,'This elegant traditional necklace set is crafted with blue-plated brass and embellished with premium pearls. Perfect for weddings and festive occasions.','[\"uploads/1761829200416-37.png\", \"uploads/1761829200423-39.png\", \"uploads/1761829200429-38.png\", \"uploads/1761829200434-40.png\", \"uploads/1761829200441-Gemini_Generated_Image_2fhau82fhau82fha.png\", \"uploads/1761829200454-Gemini_Generated_Image_8dmyjj8dmyjj8dmy.png\", \"uploads/1761829200462-Gemini_Generated_Image_zbo2tmzbo2tmzbo2.png\", \"uploads/1761829200479-Gemini_Generated_Image_hyfcdkhyfcdkhyfc.png\"]','uploads/1761829200487-37.png','uploads/1761829200491-Matteo Bianchi.mp4','uploads/1761829200511-thumbnail.png','5',4.7,150,'Green-Plated Brass','Pearl','100gm','Green Plated Brass','2025-10-30 13:00:00','2025-10-30 13:00:00');
+/*!40000 ALTER TABLE `jewelleryDetails` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -681,7 +920,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (41,'','',NULL,'','Vincent Chase Polarized','',595,'uploads/1730134631349-RJP_0422.JPG',0,5,'',NULL,20,NULL,NULL,'amazing screen glases',NULL,'2024-10-28 16:57:11','2024-10-28 16:57:11','[\"uploads/1730134631235-RJP_0418.JPG\", \"uploads/1730134631249-RJP_0420.JPG\", \"uploads/1730134631265-RJP_0422.JPG\", \"uploads/1730134631281-RJP_0423.JPG\", \"uploads/1730134631301-RJP_0424.JPG\"]','fullrim','Aviator','men','[{\"DarkRed\":\"#8B0000\"},{\"Black\":\"#000\"}]','Blue','Black',NULL,NULL,'fiber',NULL,'uploads/1748601710102-sunglasses.mp4','uploads/1748624066537-thumbnail.png'),(42,'','',NULL,'','Vincent Chase Polarized','',1300,'uploads/1730135080465-RJP_0597.JPG',0,4,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2024-10-28 17:04:40','2024-10-28 17:04:40','[\"uploads/1730135080358-RJP_0595.JPG\", \"uploads/1730135080370-RJP_0596.JPG\", \"uploads/1730135080383-RJP_0597.JPG\", \"uploads/1730135080398-RJP_0598.JPG\", \"uploads/1730135080445-RJP_0599.JPG\"]','halfrim','cats eye','kids','[{\"DarkRed\":\"#8B0000\"}]','Black','Brown',NULL,NULL,'fiber',NULL,'uploads/1748601710102-sunglasses.mp4','uploads/1748601710119-thumbnail.png'),(43,'','',NULL,'','Vincent Chase Polarized','',2100,'uploads/1730135341347-RJP_0503.JPG',0,0,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2024-10-28 17:09:01','2024-10-28 17:09:01','[\"uploads/1730135341232-RJP_0498.JPG\", \"uploads/1730135341250-RJP_0499.JPG\", \"uploads/1730135341272-RJP_0501.JPG\", \"uploads/1730135341287-RJP_0502.JPG\", \"uploads/1730135341309-RJP_0503.JPG\"]','rim less','square','men','[{\"DarkRed\":\"#8B0000\"}]','Brown','Green',NULL,NULL,'fiber',NULL,'uploads/1748601710102-sunglasses.mp4','uploads/1748601710119-thumbnail.png'),(44,'','',NULL,'','John Jacobs','',999,'uploads/1730135526441-RJP_0503.JPG',0,2,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2024-10-28 17:12:06','2024-10-28 17:12:06','[\"uploads/1730135526336-RJP_0405.JPG\", \"uploads/1730135526349-RJP_0406.JPG\", \"uploads/1730135526363-RJP_0408.JPG\", \"uploads/1730135526379-RJP_0410.JPG\", \"uploads/1730135526401-RJP_0413.JPG\"]','half rim','Rectangle','men','[{\"DarkRed\":\"#8B0000\"}]','Green','Gray',NULL,NULL,'fiber',NULL,NULL,NULL),(45,'','',NULL,'','John Jacobs','',899,'uploads/1730135627843-RJP_0640.JPG',0,6,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2024-10-28 17:13:47','2024-10-28 17:13:47','[\"uploads/1730135627737-RJP_0638.JPG\", \"uploads/1730135627750-RJP_0639.JPG\", \"uploads/1730135627785-RJP_0640.JPG\", \"uploads/1730135627802-RJP_0641.JPG\", \"uploads/1730135627822-RJP_0642.JPG\"]','full rim','wayfarer','kids','[{\"DarkRed\":\"#8B0000\"}]','Gray','Orange',NULL,NULL,'still',NULL,NULL,NULL),(59,'','',NULL,'','John Jacobs','',110,'uploads/1738236979026-RJP_0652.JPG',0,3,'',NULL,10,NULL,NULL,'amazing eye glases',NULL,'2025-01-30 11:36:19','2025-01-30 11:36:19','[\"uploads/1738236978906-RJP_0649.JPG\", \"uploads/1738236978946-RJP_0650.JPG\", \"uploads/1738236978973-RJP_0653.JPG\", \"uploads/1738236979001-RJP_0651.JPG\"]','Square','Helius Eyewear','unisex','[{\"DarkRed\":\"#8B0000\"}]','Red','Gold',NULL,NULL,'still',NULL,'uploads/1748601710102-sunglasses.mp4','uploads/1748601710119-thumbnail.png'),(62,'','',NULL,'','Eye Zones Studio','',1500,'uploads/1739203083520-RJP_0652.JPG',0,3,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2025-02-10 15:58:03','2025-02-10 15:58:03','[\"uploads/1739203083441-RJP_0649.JPG\", \"uploads/1739203083462-RJP_0650.JPG\", \"uploads/1739203083479-RJP_0653.JPG\", \"uploads/1739203083497-RJP_0651.JPG\"]','Square','Helius Eyewear','men','[{\"DarkRed\":\"#8B0000\"}]','Orange','Violet','amazing eye glases','amazing eye glases','still','',NULL,NULL),(68,'','',NULL,'','Eye Zones Studio','',1500,'uploads/1739378238101-RJP_0652.JPG',0,7,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2025-02-12 16:37:18','2025-02-12 16:37:18','[\"uploads/1739378238034-RJP_0649.JPG\", \"uploads/1739378238051-RJP_0650.JPG\", \"uploads/1739378238066-RJP_0653.JPG\", \"uploads/1739378238081-RJP_0651.JPG\"]','Square','Helius Eyewear','men','[{\"DarkRed\":\"#8B0000\"}]','Purple','Gold','amazing eye glases','amazing eye glases','still','','uploads/1748601710102-sunglasses.mp4','uploads/1748601710119-thumbnail.png'),(69,'','',NULL,'','Eye Zones Studio','',1500,'uploads/1739534245201-RJP_0652.JPG',0,8,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2025-02-14 11:57:25','2025-02-14 11:57:25','[\"uploads/1739534245090-RJP_0649.JPG\", \"uploads/1739534245116-RJP_0650.JPG\", \"uploads/1739534245147-RJP_0653.JPG\", \"uploads/1739534245181-RJP_0651.JPG\"]','Square','Helius Eyewear','women','[{\"DarkRed\":\"#8B0000\"}]','Gold','Yellow','amazing eye glases','amazing eye glases','still','',NULL,NULL),(78,'','',NULL,'','Eye Zones Studio','',2300,'uploads/1748601710076-RJP_0652.JPG',0,3,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2025-05-30 10:41:50','2025-05-30 10:41:50','[\"uploads/1748601709996-RJP_0649.JPG\", \"uploads/1748601710019-RJP_0650.JPG\", \"uploads/1748601710037-RJP_0653.JPG\", \"uploads/1748601710053-RJP_0651.JPG\"]','Square','Helius Eyewear','For Men','[{\"DarkRed\":\"#8B0000\"}]','Yellow','Blue','amazing eye glases','amazing eye glases','amazing eye glases','','uploads/1748601710102-sunglasses.mp4','uploads/1748601710119-thumbnail.png'),(84,'','',NULL,'','Eye Zones Studio','',200,'uploads/1756558756223-RJP_0652.JPG',0,3,'',NULL,10,NULL,NULL,'amazing eye glases',NULL,'2025-08-30 12:59:16','2025-08-30 12:59:16','[\"uploads/1756558756081-RJP_0649.JPG\", \"uploads/1756558756110-RJP_0650.JPG\", \"uploads/1756558756134-RJP_0653.JPG\", \"uploads/1756558756152-RJP_0651.JPG\"]','Square','Helius Eyewear','For Men',NULL,'Yellow','Blue','amazing eye glases','amazing eye glases','amazing eye glases','','uploads/1756558756358-sunglasses.mp4','uploads/1756558756370-thumbnail.png'),(85,'','',NULL,'','Eye Zones Studio','',210,'uploads/1756559027372-RJP_0652.JPG',0,3,'',NULL,10,NULL,NULL,'amazing eye glases',NULL,'2025-08-30 13:03:47','2025-08-30 13:03:47','[\"uploads/1756559027290-RJP_0649.JPG\", \"uploads/1756559027310-RJP_0650.JPG\", \"uploads/1756559027340-RJP_0653.JPG\", \"uploads/1756559027358-RJP_0651.JPG\"]','Square','Helius Eyewear','For Men',NULL,'Yellow','Blue','amazing eye glases','amazing eye glases','amazing eye glases','','uploads/1756559027405-sunglasses.mp4','uploads/1756559027423-thumbnail.png'),(88,'','',NULL,'','Rectangle Anti Glare Reading Glass','',130,'uploads/1756583716871-4.png',0,7,'',NULL,8,NULL,NULL,'Rectangle Anti Glare Reading Glass',NULL,'2025-08-30 19:55:16','2025-08-30 19:55:16','[\"uploads/1756583716459-1 (1).png\", \"uploads/1756583716468-2.png\", \"uploads/1756583716478-3.png\", \"uploads/1756583716514-5.png\", \"uploads/1756583716847-Matteo Bianchi 1 (1).png\", \"uploads/1756583716863-Matteo Bianchi 1 (2).png\"]','Aviator','Full Rim Rectangle','For Men',NULL,'Black','Black','asklalkalk','sxnslkmlk','fiber','','uploads/1756583716893-sunglasses.mp4','uploads/1756583716909-thumbnail.png');
+INSERT INTO `products` VALUES (41,'','',NULL,'','Vincent Chase Polarized','',595,'uploads/1730134631349-RJP_0422.JPG',0,5,'',NULL,20,NULL,NULL,'amazing screen glases',NULL,'2024-10-28 16:57:11','2024-10-28 16:57:11','[\"uploads/1730134631235-RJP_0418.JPG\", \"uploads/1730134631249-RJP_0420.JPG\", \"uploads/1730134631265-RJP_0422.JPG\", \"uploads/1730134631281-RJP_0423.JPG\", \"uploads/1730134631301-RJP_0424.JPG\"]','fullrim','Aviator','men','[{\"DarkRed\":\"#8B0000\"},{\"Black\":\"#000\"}]','Blue','Black',NULL,NULL,'fiber',NULL,'uploads/1748601710102-sunglasses.mp4','uploads/1748624066537-thumbnail.png'),(42,'','',NULL,'','Vincent Chase Polarized','',1300,'uploads/1730135080465-RJP_0597.JPG',0,4,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2024-10-28 17:04:40','2024-10-28 17:04:40','[\"uploads/1730135080358-RJP_0595.JPG\", \"uploads/1730135080370-RJP_0596.JPG\", \"uploads/1730135080383-RJP_0597.JPG\", \"uploads/1730135080398-RJP_0598.JPG\", \"uploads/1730135080445-RJP_0599.JPG\"]','halfrim','cats eye','kids','[{\"DarkRed\":\"#8B0000\"}]','Black','Brown',NULL,NULL,'fiber',NULL,'uploads/1748601710102-sunglasses.mp4','uploads/1748601710119-thumbnail.png'),(43,'','',NULL,'','Vincent Chase Polarized','',2100,'uploads/1730135341347-RJP_0503.JPG',0,0,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2024-10-28 17:09:01','2024-10-28 17:09:01','[\"uploads/1730135341232-RJP_0498.JPG\", \"uploads/1730135341250-RJP_0499.JPG\", \"uploads/1730135341272-RJP_0501.JPG\", \"uploads/1730135341287-RJP_0502.JPG\", \"uploads/1730135341309-RJP_0503.JPG\"]','rim less','square','men','[{\"DarkRed\":\"#8B0000\"}]','Brown','Green',NULL,NULL,'fiber',NULL,'uploads/1748601710102-sunglasses.mp4','uploads/1748601710119-thumbnail.png'),(44,'','',NULL,'','John Jacobs','',999,'uploads/1730135526441-RJP_0503.JPG',0,2,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2024-10-28 17:12:06','2024-10-28 17:12:06','[\"uploads/1730135526336-RJP_0405.JPG\", \"uploads/1730135526349-RJP_0406.JPG\", \"uploads/1730135526363-RJP_0408.JPG\", \"uploads/1730135526379-RJP_0410.JPG\", \"uploads/1730135526401-RJP_0413.JPG\"]','half rim','Rectangle','men','[{\"DarkRed\":\"#8B0000\"}]','Green','Gray',NULL,NULL,'fiber',NULL,NULL,NULL),(45,'','',NULL,'','John Jacobs','',10,'uploads/1730135627843-RJP_0640.JPG',0,6,'',NULL,90,NULL,NULL,'amazing eye glases',NULL,'2024-10-28 17:13:47','2024-10-28 17:13:47','[\"uploads/1730135627737-RJP_0638.JPG\", \"uploads/1730135627750-RJP_0639.JPG\", \"uploads/1730135627785-RJP_0640.JPG\", \"uploads/1730135627802-RJP_0641.JPG\", \"uploads/1730135627822-RJP_0642.JPG\"]','full rim','wayfarer','kids','[{\"DarkRed\":\"#8B0000\"}]','Gray','Orange',NULL,NULL,'still',NULL,NULL,NULL),(59,'','',NULL,'','John Jacobs','',110,'uploads/1738236979026-RJP_0652.JPG',0,3,'',NULL,10,NULL,NULL,'amazing eye glases',NULL,'2025-01-30 11:36:19','2025-01-30 11:36:19','[\"uploads/1738236978906-RJP_0649.JPG\", \"uploads/1738236978946-RJP_0650.JPG\", \"uploads/1738236978973-RJP_0653.JPG\", \"uploads/1738236979001-RJP_0651.JPG\"]','Square','Helius Eyewear','unisex','[{\"DarkRed\":\"#8B0000\"}]','Red','Gold',NULL,NULL,'still',NULL,'uploads/1748601710102-sunglasses.mp4','uploads/1748601710119-thumbnail.png'),(62,'','',NULL,'','Eye Zones Studio','',1500,'uploads/1739203083520-RJP_0652.JPG',0,3,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2025-02-10 15:58:03','2025-02-10 15:58:03','[\"uploads/1739203083441-RJP_0649.JPG\", \"uploads/1739203083462-RJP_0650.JPG\", \"uploads/1739203083479-RJP_0653.JPG\", \"uploads/1739203083497-RJP_0651.JPG\"]','Square','Helius Eyewear','men','[{\"DarkRed\":\"#8B0000\"}]','Orange','Violet','amazing eye glases','amazing eye glases','still','',NULL,NULL),(68,'','',NULL,'','Eye Zones Studio','',1500,'uploads/1739378238101-RJP_0652.JPG',0,7,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2025-02-12 16:37:18','2025-02-12 16:37:18','[\"uploads/1739378238034-RJP_0649.JPG\", \"uploads/1739378238051-RJP_0650.JPG\", \"uploads/1739378238066-RJP_0653.JPG\", \"uploads/1739378238081-RJP_0651.JPG\"]','Square','Helius Eyewear','men','[{\"DarkRed\":\"#8B0000\"}]','Purple','Gold','amazing eye glases','amazing eye glases','still','','uploads/1748601710102-sunglasses.mp4','uploads/1748601710119-thumbnail.png'),(69,'','',NULL,'','Eye Zones Studio','',1500,'uploads/1739534245201-RJP_0652.JPG',0,8,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2025-02-14 11:57:25','2025-02-14 11:57:25','[\"uploads/1739534245090-RJP_0649.JPG\", \"uploads/1739534245116-RJP_0650.JPG\", \"uploads/1739534245147-RJP_0653.JPG\", \"uploads/1739534245181-RJP_0651.JPG\"]','Square','Helius Eyewear','women','[{\"DarkRed\":\"#8B0000\"}]','Gold','Yellow','amazing eye glases','amazing eye glases','still','',NULL,NULL),(78,'','',NULL,'','Eye Zones Studio','',2300,'uploads/1748601710076-RJP_0652.JPG',0,3,'',NULL,20,NULL,NULL,'amazing eye glases',NULL,'2025-05-30 10:41:50','2025-05-30 10:41:50','[\"uploads/1748601709996-RJP_0649.JPG\", \"uploads/1748601710019-RJP_0650.JPG\", \"uploads/1748601710037-RJP_0653.JPG\", \"uploads/1748601710053-RJP_0651.JPG\"]','Square','Helius Eyewear','For Men','[{\"DarkRed\":\"#8B0000\"}]','Yellow','Blue','amazing eye glases','amazing eye glases','amazing eye glases','','uploads/1748601710102-sunglasses.mp4','uploads/1748601710119-thumbnail.png'),(84,'','',NULL,'','Eye Zones Studio','',200,'uploads/1756558756223-RJP_0652.JPG',0,3,'',NULL,10,NULL,NULL,'amazing eye glases',NULL,'2025-08-30 12:59:16','2025-08-30 12:59:16','[\"uploads/1756558756081-RJP_0649.JPG\", \"uploads/1756558756110-RJP_0650.JPG\", \"uploads/1756558756134-RJP_0653.JPG\", \"uploads/1756558756152-RJP_0651.JPG\"]','Square','Helius Eyewear','For Men',NULL,'Yellow','Blue','amazing eye glases','amazing eye glases','amazing eye glases','','uploads/1756558756358-sunglasses.mp4','uploads/1756558756370-thumbnail.png'),(85,'','',NULL,'','Eye Zones Studio','',210,'uploads/1756559027372-RJP_0652.JPG',0,3,'',NULL,10,NULL,NULL,'amazing eye glases',NULL,'2025-08-30 13:03:47','2025-08-30 13:03:47','[\"uploads/1756559027290-RJP_0649.JPG\", \"uploads/1756559027310-RJP_0650.JPG\", \"uploads/1756559027340-RJP_0653.JPG\", \"uploads/1756559027358-RJP_0651.JPG\"]','Square','Helius Eyewear','For Men',NULL,'Yellow','Blue','amazing eye glases','amazing eye glases','amazing eye glases','','uploads/1756559027405-sunglasses.mp4','uploads/1756559027423-thumbnail.png'),(88,'','',NULL,'','Rectangle Anti Glare Reading Glass','',10,'uploads/1756583716871-4.png',0,7,'',NULL,20,NULL,NULL,'Rectangle Anti Glare Reading Glass',NULL,'2025-08-30 19:55:16','2025-08-30 19:55:16','[\"uploads/1756583716459-1 (1).png\", \"uploads/1756583716468-2.png\", \"uploads/1756583716478-3.png\", \"uploads/1756583716514-5.png\", \"uploads/1756583716847-Matteo Bianchi 1 (1).png\", \"uploads/1756583716863-Matteo Bianchi 1 (2).png\"]','Aviator','Full Rim Rectangle','For Men',NULL,'Black','Black','asklalkalk','sxnslkmlk','fiber','','uploads/1756583716893-sunglasses.mp4','uploads/1756583716909-thumbnail.png');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -870,7 +1109,7 @@ CREATE TABLE `sliders` (
 
 LOCK TABLES `sliders` WRITE;
 /*!40000 ALTER TABLE `sliders` DISABLE KEYS */;
-INSERT INTO `sliders` VALUES (1,'Aviator','banner','1745502673808-fasttrack.png','2025-04-24 13:51:13','2025-04-24 13:51:13',NULL),(2,'Aviator','banner','1745504087825-sbi_card.png','2025-04-24 14:14:47','2025-04-24 14:14:47',NULL),(3,'Sunglasses','banner','1745504109032-fasttrack_sunglasses.png','2025-04-24 14:15:09','2025-04-24 14:15:09',NULL),(4,'Sunglasses','banner','1745504187675-tees_by_fasttrack.png','2025-04-24 14:16:27','2025-04-24 14:16:27',NULL),(5,'Sunglasses','banner','1745504267760-titen_or_fasttrack.png','2025-04-24 14:17:47','2025-04-24 14:17:47',NULL),(6,'Avaitor','banner','1745504326288-titen_sing.png','2025-04-24 14:18:46','2025-04-24 14:18:46',NULL),(7,'Avaitor','banner','1745504338733-tees_by_fasttrack.png','2025-04-24 14:18:58','2025-04-24 14:18:58',NULL),(8,'Sunglasses Styles For Men','product_image','1745513958986-Screen Shot 2025-04-24 at 6.23.26 PM.png','2025-04-24 16:59:18','2025-05-26 13:01:35',NULL),(9,'Sunglasses Styles For Women','product_image','1745513985214-Screen Shot 2025-04-24 at 6.24.14 PM.png','2025-04-24 16:59:45','2025-05-26 13:02:51',NULL),(10,'Sunglasses Styles For Men','product_image','1745514014870-Screen Shot 2025-04-24 at 6.24.50 PM.png','2025-04-24 17:00:14','2025-05-26 13:01:47',NULL),(11,'Sunglasses Styles For Men','product_image','1745514070274-Screen Shot 2025-04-24 at 6.25.22 PM.png','2025-04-24 17:01:10','2025-05-26 13:02:12',NULL),(12,'Sunglasses Styles For Women','product_image','1745514117701-Screen Shot 2025-04-24 at 6.26.19 PM.png','2025-04-24 17:01:57','2025-05-26 13:02:39',NULL),(13,'Sunglasses Styles For Men','product_image','1745514132348-Screen Shot 2025-04-24 at 6.26.52 PM.png','2025-04-24 17:02:12','2025-05-26 13:01:59',NULL),(14,'Power Glass','top_mini_image','1748432776133-sunglasses1.png','2025-05-23 15:05:19','2025-05-28 11:46:16',NULL),(15,'Power Sunglasses','top_mini_image','1748012791455-sunglasses3.png','2025-05-23 15:06:31','2025-05-23 15:06:31',NULL),(16,'Screen Saver','top_mini_image','1748012840456-sunglasses5.png','2025-05-23 15:07:20','2025-05-23 15:07:20',NULL),(17,'Sunglasses','top_mini_image','1748012888265-sunglasses2.jpg','2025-05-23 15:08:08','2025-05-23 15:08:08',NULL),(18,'Contact Lenses','top_mini_image','1748012972130-sunglasses4.png','2025-05-23 15:09:32','2025-05-23 15:09:32',NULL);
+INSERT INTO `sliders` VALUES (1,'Aviator','banner','1745502673808-fasttrack.png','2025-04-24 13:51:13','2025-04-24 13:51:13',NULL),(2,'Aviator','banner','1745504087825-sbi_card.png','2025-04-24 14:14:47','2025-04-24 14:14:47',NULL),(3,'Sunglasses','banner','1745504109032-fasttrack_sunglasses.png','2025-04-24 14:15:09','2025-04-24 14:15:09',NULL),(4,'Sunglasses','banner','1745504187675-tees_by_fasttrack.png','2025-04-24 14:16:27','2025-04-24 14:16:27',NULL),(5,'Sunglasses','banner','1745504267760-titen_or_fasttrack.png','2025-04-24 14:17:47','2025-04-24 14:17:47',NULL),(6,'Avaitor','banner','1745504326288-titen_sing.png','2025-04-24 14:18:46','2025-04-24 14:18:46',NULL),(7,'Avaitor','banner','1745504338733-tees_by_fasttrack.png','2025-04-24 14:18:58','2025-04-24 14:18:58',NULL),(8,'Sunglasses Styles For Men','product_image','1745513958986-Screen Shot 2025-04-24 at 6.23.26 PM.png','2025-04-24 16:59:18','2025-05-26 13:01:35',NULL),(9,'Sunglasses Styles For Women','product_image','1745513985214-Screen Shot 2025-04-24 at 6.24.14 PM.png','2025-04-24 16:59:45','2025-05-26 13:02:51',NULL),(10,'Sunglasses Styles For Men','product_image','1745514014870-Screen Shot 2025-04-24 at 6.24.50 PM.png','2025-04-24 17:00:14','2025-05-26 13:01:47',NULL),(11,'Sunglasses Styles For Men','product_image','1745514070274-Screen Shot 2025-04-24 at 6.25.22 PM.png','2025-04-24 17:01:10','2025-05-26 13:02:12',NULL),(12,'Sunglasses Styles For Women','product_image','1745514117701-Screen Shot 2025-04-24 at 6.26.19 PM.png','2025-04-24 17:01:57','2025-05-26 13:02:39',NULL),(13,'Sunglasses Styles For Men','product_image','1745514132348-Screen Shot 2025-04-24 at 6.26.52 PM.png','2025-04-24 17:02:12','2025-05-26 13:01:59',NULL),(14,'Jewellery','top_mini_image','1761389779811-360_F_755448613_6EfbBonaIOncdfdqrjgJ6WGIpAUWacXn.jpg','2025-05-23 15:05:19','2025-10-25 10:56:19',NULL),(15,'Clothings','top_mini_image','1761389848006-hangers-1850082_1280.jpg','2025-05-23 15:06:31','2025-10-25 10:57:28',NULL),(16,'Purse-nd-bags','top_mini_image','1761392339729-handbag-1478814_1280.jpg','2025-05-23 15:07:20','2025-12-04 10:36:25',NULL),(17,'Eyewear','top_mini_image','1748012888265-sunglasses2.jpg','2025-05-23 15:08:08','2025-12-04 10:31:16',NULL),(18,'Footwear','top_mini_image','1761395320145-360_F_197422899_N0mELNNZaFzosecqaD2bQA50egRcjMMw.jpg','2025-05-23 15:09:32','2025-12-04 10:37:48',NULL);
 /*!40000 ALTER TABLE `sliders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1186,4 +1425,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-20 15:50:54
+-- Dump completed on 2026-02-03 19:07:25
