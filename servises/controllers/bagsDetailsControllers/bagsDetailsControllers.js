@@ -16,8 +16,8 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: { fileSize: 100 * 1024 * 1024 },
-}).fields([{ name: 'images', maxCount: 10 },{ name: 'thumbnail_url', maxCount: 1 }, { name: 'video_url', maxCount: 1 },
- { name: 'video_thumbnail_url', maxCount: 1 },]);
+}).fields([{ name: 'images', maxCount: 10 }, { name: 'thumbnail_url', maxCount: 1 }, { name: 'video_url', maxCount: 1 },
+{ name: 'video_thumbnail_url', maxCount: 1 },]);
 
 const addBags = async (req, res) => {
   upload(req, res, async (err) => {
@@ -132,7 +132,7 @@ const deleteBags = async (req, res) => {
     deleteFile(bags.video_url);
     deleteFile(bags.video_thumbnail_url);
 
-    await bagsDetails.destroy();
+    await bags.destroy();
 
     return res.status(200).json({
       message: "bags product delete Successfully.",
@@ -169,10 +169,11 @@ const updateBags = async (req, res) => {
         return res.status(404).json({ message: "Bags product not found" });
       }
 
-      const allimages = req.files["images"];
-      const thumbnailImage = req.files['thumbnail_url']?.[0];
-      const videoFile = req.files['video_url']?.[0];
-      const videoThumbnailFile = req.files['video_thumbnail_url']?.[0];
+      const allimages = req.files?.images || [];
+      const thumbnailImage = req.files?.thumbnail_url?.[0] || null;
+      const videoFile = req.files?.video_url?.[0] || null;
+      const videoThumbnailFile = req.files?.video_thumbnail_url?.[0] || null;
+
 
       const thumbnail_url = thumbnailImage ? `uploads/${thumbnailImage.filename}` : bags.thumbnail_url;
       const video_url = videoFile ? `uploads/${videoFile.filename}` : bags.video_url;
