@@ -72,6 +72,7 @@ const clothingDetails = database.define("clothingDetails", {
     type: DataTypes.INTEGER
   },
 
+  
   size: {
     type: DataTypes.JSON,
     allowNull: false

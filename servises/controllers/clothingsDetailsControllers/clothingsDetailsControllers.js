@@ -69,7 +69,7 @@ const addClothing = async (req, res) => {
         stock_status: req.body.stock_status,
         rating: req.body.rating,
         total_reviews: req.body.total_reviews,
-        size: JSON.parse(req.body.size),     
+        size: JSON.parse(req.body.size),
         material_type: req.body.material_type,
         fabric_type: req.body.fabric_type,
         fit_type: req.body.fit_type,
@@ -151,7 +151,7 @@ const deleteClothing = async (req, res) => {
     deleteFile(clothing.video_url);
     deleteFile(clothing.video_thumbnail_url);
 
-    await clothingDetails.destroy({ where: { product_id } });
+    await clothing.destroy({ where: { product_id } });
 
     return res.status(200).json({
       message: "Clothing product deleted successfully.",
@@ -186,33 +186,26 @@ const updateClothing = async (req, res) => {
         return res.status(404).json({ message: "Clothing product not found" });
       }
 
-      const allimages = req.files["images"];
-      const thumbnailImage = req.files["thumbnail_url"]?.[0];
-      const videoFile = req.files["video_url"]?.[0];
-      const videoThumbnailFile = req.files["video_thumbnail_url"]?.[0];
+      const allimages = req.files?.images || [];
+      const thumbnailImage = req.files?.thumbnail_url?.[0] || null;
+      const videoFile = req.files?.video_url?.[0] || null;
+      const videoThumbnailFile = req.files?.video_thumbnail_url?.[0] || null;
 
-      const thumbnail_url = thumbnailImage
-        ? `uploads/${thumbnailImage.filename}`
-        : clothing.thumbnail_url;
-
-      const video_url = videoFile
-        ? `uploads/${videoFile.filename}`
-        : clothing.video_url;
-
-      const video_thumbnail_url = videoThumbnailFile
-        ? `uploads/${videoThumbnailFile.filename}`
-        : clothing.video_thumbnail_url;
+      const thumbnail_url = thumbnailImage ? `uploads/${thumbnailImage.filename}` : clothing.thumbnail_url;
+      const video_url = videoFile ? `uploads/${videoFile.filename}` : clothing.video_url;
+      const video_thumbnail_url = videoThumbnailFile ? `uploads/${videoThumbnailFile.filename}` : clothing.video_thumbnail_url;
 
       let images = clothing.images;
-
-      if (allimages) {
-        if (Array.isArray(clothing.images)) {
-          clothing.images.forEach((oldPath) => {
+      if (allimages.length > 0) {
+        // delete old images
+        if (Array.isArray(bags.images)) {
+          bags.images.forEach((oldPath) => {
             const fullPath = path.resolve(oldPath);
             if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
           });
         }
 
+        // set new images
         images = allimages.map((image) => `uploads/${image.filename}`);
       }
 

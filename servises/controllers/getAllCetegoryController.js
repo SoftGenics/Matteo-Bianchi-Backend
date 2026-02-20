@@ -4,6 +4,7 @@ const Jewellery = require('../models/jewelleryDetailsModels/jewelleryDetails');
 const Clothing = require("../models/clothingDetailModels/clothingDetail");
 const Footwear = require('../models/footwearDetailsModels/footwearDetails');
 const Purse = require('../models/bagsDetailsModels/bagsDetails');
+const Products = require('../models/eyewearModels/product');
 
 
 exports.getAllSearchCategory = async (req, res) => {
@@ -82,20 +83,28 @@ exports.getAllCetegory = async (req, res) => {
 
         // Fetch all products from 5 tables
         const [eyewear, jewellery, clothing, footwear, purse] = await Promise.all([
-            Eyewear.findAll(),
-            Jewellery.findAll(),
-            Clothing.findAll(),
-            Footwear.findAll(),
-            Purse.findAll(),
+            Eyewear.findAll({ order: [["createdAt", "DESC"]], limit: 200 }),
+            Jewellery.findAll({ order: [["createdAt", "DESC"]], limit: 200 }),
+            Clothing.findAll({ order: [["createdAt", "DESC"]], limit: 200 }),
+            Footwear.findAll({ order: [["createdAt", "DESC"]], limit: 200 }),
+            Purse.findAll({ order: [["createdAt", "DESC"]], limit: 200 }),
         ]);
 
+        const addCategory = (data, categoryName) => {
+            return data.map((p) => ({
+                ...p.toJSON(),
+                category: categoryName,
+            }));
+        };
+
         const allProducts = [
-            ...eyewear.map((p) => ({ ...p.toJSON(), category: "eyewear" })),
-            ...jewellery.map((p) => ({ ...p.toJSON(), category: "jewellery" })),
-            ...clothing.map((p) => ({ ...p.toJSON(), category: "clothing" })),
-            ...footwear.map((p) => ({ ...p.toJSON(), category: "footwear" })),
-            ...purse.map((p) => ({ ...p.toJSON(), category: "purse" })),
+            ...addCategory(eyewear, "eyewear"),
+            ...addCategory(jewellery, "jewellery"),
+            ...addCategory(clothing, "clothing"),
+            ...addCategory(footwear, "footwear"),
+            ...addCategory(purse, "purse"),
         ];
+
 
         const totalProducts = allProducts.length;
         const paginatedData = allProducts.slice(offset, offset + limit);
@@ -113,8 +122,55 @@ exports.getAllCetegory = async (req, res) => {
     }
 };
 
+exports.getLatestMixedProducts = async (req, res) => {
+    try {
+        const [jewellery, clothing, footwear, purse, products] = await Promise.all([
+            // Eyewear.findAll({ order: [["createdAt", "DESC"]], limit: 20 }),
+            Jewellery.findAll({ order: [["createdAt", "DESC"]], limit: 2 }),
+            Clothing.findAll({ order: [["createdAt", "DESC"]], limit: 2 }),
+            Footwear.findAll({ order: [["createdAt", "DESC"]], limit: 2 }),
+            Purse.findAll({ order: [["createdAt", "DESC"]], limit: 2 }),
+            Products.findAll({ order: [["createdAt", "DESC"]], limit: 2 }),
+        ]);
+
+        const addCategory = (data, categoryName) => {
+            return data.map((p) => ({
+                ...p.toJSON(),
+                category: categoryName,
+            }));
+        };
+
+        // Sabko merge karo
+        const allProducts = [
+            // ...addCategory(eyewear, "eyewear"),
+            ...addCategory(jewellery, "jewellery"),
+            ...addCategory(clothing, "clothing"),
+            ...addCategory(footwear, "footwear"),
+            ...addCategory(purse, "purse"),
+            ...addCategory(products, "products"),
+        ];
+
+        // 🔥 First latest, then random mix 
+        allProducts.sort(() => Math.random() - 0.5);
+
+        // Sirf 20 products return 
+        const finalProducts = allProducts.slice(0, 10);
+
+        res.status(200).json({
+            total: finalProducts.length,
+            data: finalProducts,
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Something went wrong", error });
+    }
+};
+
+
 exports.getSingleProduct = async (req, res) => {
-    const modelMap = { eyewear: Eyewear, jewellery: Jewellery, clothings: Clothing,
+    const modelMap = {
+        eyewear: Eyewear, jewellery: Jewellery, clothings: Clothing,
         footwear: Footwear, purse: Purse,
     };
 

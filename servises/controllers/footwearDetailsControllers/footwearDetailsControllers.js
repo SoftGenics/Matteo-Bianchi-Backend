@@ -142,7 +142,7 @@ const deleteFootwear = async (req, res) => {
     deleteFile(footwear.video_url);
     deleteFile(footwear.video_thumbnail_url);
 
-    await footwearDetails.destroy();
+    await footwear.destroy();
 
     return res.status(200).json({
       message: "footwear product delete Successfully.",
@@ -177,23 +177,26 @@ const updateFootwear = async (req, res) => {
         return res.status(404).json({ message: "Footwear product not found" });
       }
 
-      const allimages = req.files["images"];
-      const thumbnailImage = req.files['thumbnail_url']?.[0];
-      const videoFile = req.files['video_url']?.[0];
-      const videoThumbnailFile = req.files['video_thumbnail_url']?.[0];
+      const allimages = req.files?.images || [];
+      const thumbnailImage = req.files?.thumbnail_url?.[0] || null;
+      const videoFile = req.files?.video_url?.[0] || null;
+      const videoThumbnailFile = req.files?.video_thumbnail_url?.[0] || null;
 
       const thumbnail_url = thumbnailImage ? `uploads/${thumbnailImage.filename}` : footwear.thumbnail_url;
       const video_url = videoFile ? `uploads/${videoFile.filename}` : footwear.video_url;
       const video_thumbnail_url = videoThumbnailFile ? `uploads/${videoThumbnailFile.filename}` : footwear.video_thumbnail_url;
 
       let images = footwear.images;
-      if (allimages) {
-        if (Array.isArray(footwear.images)) {
-          footwear.images.forEach((oldPath) => {
+      if (allimages.length > 0) {
+        // delete old images
+        if (Array.isArray(bags.images)) {
+          bags.images.forEach((oldPath) => {
             const fullPath = path.resolve(oldPath);
             if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
           });
         }
+
+        // set new images
         images = allimages.map((image) => `uploads/${image.filename}`);
       }
 

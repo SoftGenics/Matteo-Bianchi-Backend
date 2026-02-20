@@ -34,6 +34,8 @@ const lenskartPayment = require('./servises/routes/eyewearRoutes/lenskartPayment
 const trackShipment = require('./servises/routes/trackShipment')
 const cashfreePayment = require('./servises/routes/cashfreePayment')
 const getAllCetegory = require('./servises/routes/getAllCetegoryRoutes')
+const adminUser = require('./servises/routes/adminUserRoutes/adminUsersRoute')
+
 
 testDbConnection();
 
@@ -117,6 +119,7 @@ app.use('/', color)
 app.use('/api/payment', lenskartPayment);
 app.use('/api/tracking', trackShipment);
 app.use('/api', cashfreePayment)
+app.use('/api', adminUser)
 
 
 app.get('/hello', (req, res) => {

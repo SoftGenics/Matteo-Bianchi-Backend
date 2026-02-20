@@ -178,15 +178,18 @@ const updateBags = async (req, res) => {
       const thumbnail_url = thumbnailImage ? `uploads/${thumbnailImage.filename}` : bags.thumbnail_url;
       const video_url = videoFile ? `uploads/${videoFile.filename}` : bags.video_url;
       const video_thumbnail_url = videoThumbnailFile ? `uploads/${videoThumbnailFile.filename}` : bags.video_thumbnail_url;
+      
       let images = bags.images;
-      if (allimages) {
+      if (allimages.length > 0) {
+        // delete old images
         if (Array.isArray(bags.images)) {
           bags.images.forEach((oldPath) => {
             const fullPath = path.resolve(oldPath);
             if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
           });
         }
-        // set new image
+      
+        // set new images
         images = allimages.map((image) => `uploads/${image.filename}`);
       }
 

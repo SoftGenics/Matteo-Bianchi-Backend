@@ -1,7 +1,8 @@
 const { Cashfree, CFEnvironment } = require("cashfree-pg");
-const { Op } = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 const crypto = require("crypto");
 const cashfreeModel = require("../models/cashfreeModel");
+const product = require("../models/eyewearModels/product")
 
 
 function generateOrderId() {
@@ -388,11 +389,104 @@ const cashfreeDetails = async (req, res) => {
   }
 }
 
+// const bestsellerProduct = async (req, res) => {
+//   try {
+//     const topProducts = await cashfreeModel.findAll({
+//       attributes: [
+//         "product_id",
+//         [Sequelize.fn("COUNT", Sequelize.col("product_id")), "total_count"]
+//       ],
+//       group: ["product_id"],
+//       order: [[Sequelize.literal("total_count"), "DESC"]],
+//       limit: 10
+//     });
+
+//     if (!topProducts.length) {
+//       return res.status(404).json({ message: "No data found" });
+//     }
+
+//     const productIds = topProducts.map(item => item.product_id);
+
+//     // ✅ Step 2: Get unique products from PRODUCT TABLE (NOT cashfreeModel)
+//     const productsData = await product.findAll({
+//       where: {
+//         product_id: {
+//           [Op.in]: productIds
+//         }
+//       }
+//     });
+
+//     res.status(200).json({
+//       bestsellerProducts: productsData
+//     });
+
+//   } catch (error) {
+//     console.error("Error:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
+
+const bestsellerProduct = async (req, res) => {
+  try {
+
+    // Step 1: Get Top 6 Most Sold product_id
+    const topProducts = await cashfreeModel.findAll({
+      attributes: [
+        "product_id",
+        [Sequelize.fn("COUNT", Sequelize.col("product_id")), "total_count"]
+      ],
+      group: ["product_id"],
+      order: [[Sequelize.literal("total_count"), "DESC"]],
+      limit: 10
+    });
+
+    let productIds = topProducts.map(item => item.product_id);
+
+    // Step 2: Agar 6 se kam milte hain to random products add karo
+    if (productIds.length < 6) {
+      const remaining = 6 - productIds.length;
+
+      const randomProducts = await product.findAll({
+        where: {
+          product_id: {
+            [Op.notIn]: productIds
+          }
+        },
+        order: Sequelize.literal("RAND()"),
+        limit: remaining
+      });
+
+      const randomIds = randomProducts.map(p => p.product_id);
+      productIds = [...productIds, ...randomIds];
+    }
+
+    // Step 3: Final Unique Product Data
+    const finalProducts = await product.findAll({
+      where: {
+        product_id: {
+          [Op.in]: productIds
+        }
+      }
+    });
+
+    res.status(200).json({
+      bestsellerProducts: finalProducts
+    });
+
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
 module.exports = {
   cashfreePayment,
   cashfreeVerifyPayment,
   cashfreeUpdateOrder,
   getCashfreeOrderById,
   getCashfreeOrderByMobile,
-  cashfreeDetails
+  cashfreeDetails,
+  bestsellerProduct
 };
