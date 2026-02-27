@@ -122,6 +122,39 @@ exports.getAllCetegory = async (req, res) => {
     }
 };
 
+exports.primiumProduct = async (req, res) => {
+    try {
+        const [jewellery, clothing, footwear, purse, products] = await Promise.all([
+            // Eyewear.findAll({ order: [["createdAt", "DESC"]], limit: 20 }),
+            Jewellery.findAll({ order: [["createdAt", "DESC"]] }),
+            Clothing.findAll({ order: [["createdAt", "DESC"]] }),
+            Footwear.findAll({ order: [["createdAt", "DESC"]] }),
+            Purse.findAll({ order: [["createdAt", "DESC"]] }),
+            Products.findAll({ order: [["createdAt", "DESC"]] }),
+        ]);
+
+        // Sabko merge karo
+        const allProducts = [
+            // ...addCategory(eyewear, "eyewear"),
+            ...addCategory(jewellery, "jewellery"),
+            ...addCategory(clothing, "clothing"),
+            ...addCategory(footwear, "footwear"),
+            ...addCategory(purse, "purse"),
+            ...addCategory(products, "products"),
+        ];
+
+
+        const finalProducts = allProducts.slice(0, 10);
+
+    } catch (error) {
+        console.error("Error fetching single product:", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            error: error.message
+        });
+    }
+}
+
 exports.getLatestMixedProducts = async (req, res) => {
     try {
         const [jewellery, clothing, footwear, purse, products] = await Promise.all([
@@ -232,4 +265,6 @@ exports.getSingleProduct = async (req, res) => {
         });
     }
 };
+
+
 
