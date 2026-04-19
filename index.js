@@ -1,11 +1,16 @@
 const express = require('express');
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 var bodyParser = require('body-parser')
+
+const cookieParser = require('cookie-parser')
 
 var cors = require('cors')
 
 const { testDbConnection } = require('./servises/connection/database')
 const app = express();
+app.use(cookieParser())
+
+
 
 const registration = require('./servises/routes/registration');
 const carousel = require('./servises/routes/eyewearRoutes/carousel');
@@ -68,7 +73,7 @@ app.use(cors({
     "https://matteo-bianchi.com"
   ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
   credentials: true,
 }));
 

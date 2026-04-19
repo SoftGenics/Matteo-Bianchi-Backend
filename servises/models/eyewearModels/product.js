@@ -10,6 +10,17 @@ const products = database.define('products', {
         primaryKey: true,
     },
 
+    // 🔥 FOREIGN KEY
+    admin_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: "admin_users", // table name EXACT hona chahiye
+            key: "admin_id"
+        },
+        onDelete: "CASCADE"
+    },
+
     product_categories: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -159,6 +170,15 @@ const products = database.define('products', {
 
     }
 )
+
+products.associate = (db) => {
+    products.belongsTo(db.admin_users, {
+        foreignKey: "admin_id",
+        as: "admin",
+        onDelete: "CASCADE",
+        hooks: true // 🔥 IMPORTANT for cascade
+    });
+};
 
 module.exports = products;
 

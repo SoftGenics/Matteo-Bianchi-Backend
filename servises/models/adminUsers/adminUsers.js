@@ -24,19 +24,66 @@ const admin_users = database.define('admin_users', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    verify_token: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
+
     admin_status: {
-        type: DataTypes.ENUM("pending", "approved"),
+        type: DataTypes.ENUM("Pending", "Approved"),
         allowNull: false,
-        defaultValue: "approved" // 🔥 main line
+        defaultValue: "Pending" // 🔥 main line
     },
     role: {
-        type: DataTypes.ENUM("admin", "user"),
+        type: DataTypes.ENUM("Admin", "Seller_Admin", "User"),
         allowNull: false,
-        defaultValue: "user" // main line
+        defaultValue: "User" // main line
     },
+    permissions: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: {
+            eyewear: false,
+            clothing: false,
+            jewellery: false,
+            footwear: false,
+            bags: false
+        }
+    }
 })
+
+// 🔥 ASSOCIATIONS
+admin_users.associate = (db) => {
+    admin_users.hasMany(db.bagsDetails, {
+      foreignKey: "admin_id",
+      as: "bags",
+      onDelete: "CASCADE",
+      hooks: true // 🔥 ADD THIS
+    });
+  
+    admin_users.hasMany(db.jewelleryDetails, {
+      foreignKey: "admin_id",
+      as: "jewellery",
+      onDelete: "CASCADE",
+      hooks: true // 🔥 ADD THIS
+    });
+  
+    admin_users.hasMany(db.eyewearDetails, {
+      foreignKey: "admin_id",
+      as: "eyewear",
+      onDelete: "CASCADE",
+      hooks: true // 🔥 ADD THIS
+    });
+  
+    admin_users.hasMany(db.footwearDetails, {
+      foreignKey: "admin_id",
+      as: "footwear",
+      onDelete: "CASCADE",
+      hooks: true // 🔥 ADD THIS
+    });
+  
+    admin_users.hasMany(db.clothingDetails, {
+      foreignKey: "admin_id",
+      as: "clothing",
+      onDelete: "CASCADE",
+      hooks: true // 🔥 ADD THIS
+    });
+  };
+
 module.exports = admin_users

@@ -7,6 +7,18 @@ const clothingDetails = database.define("clothingDetails", {
     autoIncrement: true,
     primaryKey: true
   },
+
+  // 🔥 FOREIGN KEY
+  admin_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+        model: "admin_users", // table name EXACT hona chahiye
+        key: "admin_id"
+    },
+    onDelete: "CASCADE"
+},
+
   main_category: {
     type: DataTypes.STRING,
     allowNull: false
@@ -102,5 +114,16 @@ const clothingDetails = database.define("clothingDetails", {
     allowNull: false
   }
 });
+
+// 🔥 ASSOCIATION
+clothingDetails.associate = (db) => {
+  clothingDetails.belongsTo(db.admin_users, {
+      foreignKey: "admin_id",
+      as: "admin",
+      onDelete: "CASCADE",
+      hooks: true // 🔥 IMPORTANT for cascade
+  });
+};
+
 
 module.exports = clothingDetails;

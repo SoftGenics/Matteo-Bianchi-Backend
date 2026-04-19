@@ -9,10 +9,22 @@ const eyewearDetails = database.define("eyewearDetails", {
         autoIncrement: true,
         primaryKey: true
     },
+
+    // 🔥 FOREIGN KEY
+    admin_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: "admin_users", // table name EXACT hona chahiye
+            key: "admin_id"
+        },
+        onDelete: "CASCADE"
+    },
+
     main_category: {
         type: DataTypes.STRING,
         allowNull: false
-      },      
+    },
     sub_category: {
         type: DataTypes.STRING,
         allowNull: false
@@ -93,5 +105,15 @@ const eyewearDetails = database.define("eyewearDetails", {
         type: DataTypes.STRING
     }
 });
+
+// 🔥 ASSOCIATION
+eyewearDetails.associate = (db) => {
+    eyewearDetails.belongsTo(db.admin_users, {
+        foreignKey: "admin_id",
+        as: "admin",
+        onDelete: "CASCADE",
+        hooks: true // 🔥 IMPORTANT for cascade
+    });
+};
 
 module.exports = eyewearDetails;
