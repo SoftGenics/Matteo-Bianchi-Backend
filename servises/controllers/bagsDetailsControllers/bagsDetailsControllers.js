@@ -2,7 +2,12 @@ const { Op, Sequelize } = require('sequelize');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const bagsDetails = require('../../models/bagsDetailsModels/bagsDetails');
+// const bagsDetails = require('../../models/bagsDetailsModels/bagsDetails');
+// const admin_users = require('../../models/adminUsers/adminUsers');
+const db = require('../../models');
+const bagsDetails = db.bagsDetails;
+const admin_users = db.admin_users;
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -115,7 +120,7 @@ const addBags = async (req, res) => {
     const video_thumbnail_url = videoThumbnailFile ? `uploads/${videoThumbnailFile.filename}` : null;
     try {
       const bags = await bagsDetails.create({
-        admin_id,
+        admin_id: req.admin.admin_id,
         main_category: req.body.main_category,
         sub_category: req.body.sub_category,
         product_name: req.body.product_name,
@@ -168,7 +173,14 @@ const addBags = async (req, res) => {
 const getBags = async (req, res) => {
   try {
     const bags = await bagsDetails.findAll({
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          model: admin_users,
+          as: "admin",
+          attributes: ["firstName", "lastName", "email", "role", "createdAt"]
+        }
+      ]
     })
 
     if (!bags) {
@@ -183,43 +195,311 @@ const getBags = async (req, res) => {
   }
 }
 
-const deleteBags = async (req, res) => {
-  const { product_id } = req.params;
+
+const currentSellerBags = async (req, res) => {
   try {
-    const bags = await bagsDetails.findOne({ where: { product_id } });
-    if (!bags) {
-      return res.status(404).json({
-        message: "bags product not found.",
-        id: product_id,
-      });
-    }
-    const deleteFile = (filePath) => {
-      if (filePath && fs.existsSync(path.resolve(filePath))) {
-        fs.unlinkSync(path.resolve(filePath));
-      }
-    };
-    if (Array.isArray(bags.images)) {
-      bags.images.forEach((imgPath) => deleteFile(imgPath));
-    }
+    const admin_id = req.admin.admin_id; // 👈 current seller
 
-    deleteFile(bags.thumbnail_url);
-    deleteFile(bags.video_url);
-    deleteFile(bags.video_thumbnail_url);
-
-    await bags.destroy();
+    const bags = await bagsDetails.findAll({
+      order: [['createdAt', 'DESC']],
+      where: {
+        admin_id: admin_id   // 👈 filter lag gaya
+      },
+      include: [
+        {
+          model: admin_users,
+          as: "admin",
+          attributes: ["firstName", "lastName", "email", "role", "createdAt"]
+        }
+      ]
+    });
 
     return res.status(200).json({
-      message: "bags product delete Successfully.",
-      id: product_id,
+      success: true,
+      data: bags
     });
+
   } catch (error) {
-    console.error("Delete bags failed:", error);
+    console.error(error);
     return res.status(500).json({
-      message: "Internal Server Error",
-      error: error.message,
+      message: "Internal server error"
     });
   }
 };
+
+
+// const deleteBags = async (req, res) => {
+//   console.log("deleteBags api call")
+//   const { product_id } = req.params;
+
+//   try {
+//     const bags = await bagsDetails.findOne({ where: { product_id } });
+//     if (!bags) {
+//       return res.status(404).json({
+//         message: "bags product not found.",
+//         id: product_id,
+//       });
+//     }
+//     const deleteFile = (filePath) => {
+//       if (filePath && fs.existsSync(path.resolve(filePath))) {
+//         fs.unlinkSync(path.resolve(filePath));
+//       }
+//     };
+//     if (Array.isArray(bags.images)) {
+//       bags.images.forEach((imgPath) => deleteFile(imgPath));
+//     }
+
+//     deleteFile(bags.thumbnail_url);
+//     deleteFile(bags.video_url);
+//     deleteFile(bags.video_thumbnail_url);
+
+//     await bags.destroy();
+
+//     return res.status(200).json({
+//       message: "bags product delete Successfully.",
+//       id: product_id,
+//     });
+//   } catch (error) {
+//     console.error("Delete bags failed:", error);
+//     return res.status(500).json({
+//       message: "Internal Server Error",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// const deleteBags = async (req, res) => {
+//   console.log("🗑️ deleteBags API called");
+
+//   const { product_id } = req.params;
+//   const admin_id = req.admin.admin_id;
+//   const role = req.admin.role;
+
+//   try {
+//     // 🔥 Role-based condition
+//     const whereCondition =
+//       role === "Admin"
+//         ? { product_id }
+//         : { product_id, admin_id };
+
+//     console.log("WHERE:", whereCondition);
+
+//     // 🔍 Find product
+//     const bags = await bagsDetails.findOne({ where: whereCondition });
+
+//     if (!bags) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Product not found or not authorized"
+//       });
+//     }
+
+//     console.log("Product found:", bags.product_id);
+
+//     // 🧹 Safe file delete (non-blocking)
+//     const deleteFile = async (filePath) => {
+//       try {
+//         if (!filePath) return;
+
+//         const fullPath = path.resolve(filePath);
+
+//         if (fs.existsSync(fullPath)) {
+//           await fs.promises.unlink(fullPath);
+//           console.log("Deleted file:", fullPath);
+//         }
+//       } catch (err) {
+//         console.log("File delete error:", err.message);
+//       }
+//     };
+
+//     // 🖼️ Delete images array
+//     if (Array.isArray(bags.images)) {
+//       for (const img of bags.images) {
+//         await deleteFile(img);
+//       }
+//     }
+
+//     // 🎬 Delete other files
+//     await deleteFile(bags.thumbnail_url);
+//     await deleteFile(bags.video_url);
+//     await deleteFile(bags.video_thumbnail_url);
+
+//     console.log("Files deleted");
+
+//     // 🗑️ Delete DB record
+//     await bags.destroy({ hooks: false });
+
+//     console.log("DB record deleted");
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Product deleted successfully",
+//       id: product_id
+//     });
+
+//   } catch (error) {
+//     console.error("❌ Delete bags failed:", error);
+
+//     return res.status(500).json({
+//       success: false,
+//       message: "Internal Server Error",
+//       error: error.message
+//     });
+//   }
+// };
+
+// const deleteBags = async (req, res) => {
+//   console.log("🗑️ deleteBags API called");
+
+//   const { product_id } = req.params;
+//   const admin_id = req.admin.admin_id;
+//   const role = req.admin.role;
+
+//   try {
+//     // 🔥 Condition (Admin vs Seller)
+//     const whereCondition = role === "Admin" ? { product_id } : { product_id, admin_id };
+
+//     // 🔍 Find product
+//     const bags = await bagsDetails.findOne({ where: whereCondition });
+
+//     if (!bags) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Product not found or not authorized"
+//       });
+//     }
+
+//     // 🧹 File delete helper
+//     const deleteFile = async (filePath) => {
+//       try {
+//         if (!filePath) return;
+
+//         const fullPath = path.resolve(filePath);
+
+//         if (fs.existsSync(fullPath)) {
+//           await fs.promises.unlink(fullPath);
+//         }
+//       } catch (err) {
+//         console.log("File delete error:", err.message);
+//       }
+//     };
+
+//     // 🖼️ Delete images
+//     if (Array.isArray(bags.images)) {
+//       for (const img of bags.images) {
+//         await deleteFile(img);
+//       }
+//     }
+
+//     // 🎬 Delete other files
+//     await deleteFile(bags.thumbnail_url);
+//     await deleteFile(bags.video_url);
+//     await deleteFile(bags.video_thumbnail_url);
+
+//     console.log("Files deleted");
+
+//     // 🔥 IMPORTANT: Direct DB delete (no hang)
+//     const deleted = await bagsDetails.destroy({
+//       where: whereCondition
+//     });
+
+//     if (!deleted) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Delete failed"
+//       });
+//     }
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Product deleted successfully",
+//       id: product_id
+//     });
+
+//   } catch (error) {
+//     console.error("❌ Delete bags failed:", error);
+
+//     return res.status(500).json({
+//       success: false,
+//       message: "Internal Server Error"
+//     });
+//   }
+// };
+
+const deleteBags = async (req, res) => {
+  console.log("🗑️ deleteBags API called");
+
+  const { product_id } = req.params;
+
+  try {
+    // 🔍 Find product
+    const bags = await bagsDetails.findOne({ where: { product_id } });
+
+    if (!bags) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found or not authorized"
+      });
+    }
+
+    // 🧹 File delete helper
+    const deleteFile = async (filePath) => {
+      try {
+        if (!filePath) return;
+
+        const fullPath = path.resolve(filePath);
+
+        if (fs.existsSync(fullPath)) {
+          await fs.promises.unlink(fullPath);
+        }
+      } catch (err) {
+        console.log("File delete error:", err.message);
+      }
+    };
+
+    // 🖼️ Delete images
+    if (Array.isArray(bags.images)) {
+      for (const img of bags.images) {
+        await deleteFile(img);
+      }
+    }
+
+    // 🎬 Delete other files
+    await deleteFile(bags.thumbnail_url);
+    await deleteFile(bags.video_url);
+    await deleteFile(bags.video_thumbnail_url);
+
+    console.log("Files deleted");
+
+    // 🔥 IMPORTANT: Direct DB delete (no hang)
+    const deleted = await bagsDetails.destroy({
+      where: { product_id }
+    });
+
+    if (!deleted) {
+      return res.status(400).json({
+        success: false,
+        message: "Delete failed"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+      id: product_id
+    });
+
+  } catch (error) {
+    console.error("❌ Delete bags failed:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    });
+  }
+};
+
+
 
 const updateBags = async (req, res) => {
   const { product_id } = req.params;
@@ -252,7 +532,7 @@ const updateBags = async (req, res) => {
       const thumbnail_url = thumbnailImage ? `uploads/${thumbnailImage.filename}` : bags.thumbnail_url;
       const video_url = videoFile ? `uploads/${videoFile.filename}` : bags.video_url;
       const video_thumbnail_url = videoThumbnailFile ? `uploads/${videoThumbnailFile.filename}` : bags.video_thumbnail_url;
-      
+
       let images = bags.images;
       if (allimages.length > 0) {
         // delete old images
@@ -262,7 +542,7 @@ const updateBags = async (req, res) => {
             if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
           });
         }
-      
+
         // set new images
         images = allimages.map((image) => `uploads/${image.filename}`);
       }
@@ -317,4 +597,4 @@ const updateBags = async (req, res) => {
 
 
 
-module.exports = { addBags, getBags, deleteBags, updateBags }
+module.exports = { addBags, getBags, currentSellerBags, deleteBags, updateBags }

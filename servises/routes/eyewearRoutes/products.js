@@ -18,16 +18,20 @@ const {userAuth} = require('../../middleware/authmiddleware')
 // const upload = multer({ storage: storage })
 
 const productsController = require('../../controllers/eyewearControllers/productsController')
+const checkPermission = require('../../middleware/checkPermission')
+const verifyAdminToken = require('../../middleware/verifyAdminToken')
 
 
-route.post('/product/',productsController.Addproduct)
+route.post('/product/', checkPermission('eyewear'), productsController.Addproduct)
 route.get('/product/',productsController.getproduct)
+route.get('/product/current/seller', verifyAdminToken, productsController.currentSellerEyewearProduct)
+
 route.get('/new/arrivel/',productsController.newArrivel)
 route.get('/product/productdetail/:productId',productsController.productdetail)
-route.delete('/api/products/delete/:product_id', productsController.productDeleteById)
+route.delete('/api/products/delete/:product_id',  checkPermission('eyewear'), productsController.productDeleteById)
 route.get('/api/products/all/filter', productsController.fillterData)
 route.post('/api/products/all/filter/data', userAuth, productsController.fillterDataget)
 route.get('/api/products/all/filter/new', productsController.fillterNewData)
-route.put('/api/update/:productId', productsController.editProduct);
+route.put('/api/update/:productId',  checkPermission('eyewear'), productsController.editProduct);
 
 module.exports = route

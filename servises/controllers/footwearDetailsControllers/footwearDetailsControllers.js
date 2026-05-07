@@ -2,7 +2,11 @@ const { Op, Sequelize } = require('sequelize');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const footwearDetails = require('../../models/footwearDetailsModels/footwearDetails');
+
+const db = require('../../models');
+const footwearDetails = db.footwearDetails;
+const admin_users = db.admin_users;
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -49,6 +53,7 @@ const addFootwear = async (req, res) => {
 
     try {
       const footwear = await footwearDetails.create({
+        admin_id: req.admin.admin_id,
         main_category: req.body.main_category,
         sub_category: req.body.sub_category,
         product_name: req.body.product_name,
@@ -102,7 +107,13 @@ const addFootwear = async (req, res) => {
 const getFootwear = async (req, res) => {
   try {
     const footwear = await footwearDetails.findAll({
-      order: [['createdAt', 'DESC']]
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: admin_users,
+          as: "admin",
+        }
+      ]
     })
 
     if (!footwear) {
@@ -116,6 +127,36 @@ const getFootwear = async (req, res) => {
     console.error("internal server error", error)
   }
 }
+
+const currentSellerFootwear = async (req, res) => {
+  try {
+    const admin_id = req.admin.admin_id; // 👈 current seller
+
+    const footwear = await footwearDetails.findAll({
+      order: [['createdAt', 'DESC']],
+      where: {
+        admin_id: admin_id   // 👈 filter lag gaya
+      },
+      include: [
+        {
+          model: admin_users,
+          as: "admin"
+        }
+      ]
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: footwear
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal server error"
+    });
+  }
+};
 
 const deleteFootwear = async (req, res) => {
   const { product_id } = req.params;
@@ -142,7 +183,7 @@ const deleteFootwear = async (req, res) => {
     deleteFile(footwear.video_url);
     deleteFile(footwear.video_thumbnail_url);
 
-    await footwear.destroy();
+    await footwearDetails.destroy({ where: { product_id } });
 
     return res.status(200).json({
       message: "footwear product delete Successfully.",
@@ -251,4 +292,4 @@ const updateFootwear = async (req, res) => {
   });
 };
 
-module.exports = { addFootwear, getFootwear, deleteFootwear, updateFootwear }
+module.exports = { addFootwear, getFootwear, currentSellerFootwear, deleteFootwear, updateFootwear }

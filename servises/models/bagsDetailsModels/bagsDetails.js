@@ -7,7 +7,7 @@ const bagsDetails = database.define("bagsDetails", {
         autoIncrement: true,
         primaryKey: true
     },
-    
+
     // 🔥 FOREIGN KEY
     admin_id: {
         type: DataTypes.INTEGER,
@@ -108,8 +108,8 @@ const bagsDetails = database.define("bagsDetails", {
 });
 
 // 🔥 ASSOCIATION
-bagsDetails.associate = (db) => {
-    bagsDetails.belongsTo(db.admin_users, {
+bagsDetails.associate = (models) => {
+    bagsDetails.belongsTo(models.admin_users, {
         foreignKey: "admin_id",
         as: "admin",
         onDelete: "CASCADE",

@@ -2,7 +2,10 @@ const { Op, Sequelize } = require('sequelize');
 const multer = require('multer');
 const fs = require("fs");
 const path = require("path");
-const jewelleryDetails = require('../../models/jewelleryDetailsModels/jewelleryDetails')
+
+const db = require('../../models');
+const jewelleryDetails = db.jewelleryDetails;
+const admin_users = db.admin_users;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -42,6 +45,7 @@ const addJewellery = async (req, res) => {
             const video_url = videoFile ? `uploads/${videoFile.filename}` : null;
             const video_thumbnail_url = videoThumbnailFile ? `uploads/${videoThumbnailFile.filename}` : null;
             const jewellery = await jewelleryDetails.create({
+                admin_id: req.admin.admin_id,
                 main_category: req.body.main_category,
                 sub_category: req.body.sub_category,
                 product_name: req.body.product_name,
@@ -90,7 +94,14 @@ const addJewellery = async (req, res) => {
 const getJewellery = async (req, res) => {
     try {
         const jewellery = await jewelleryDetails.findAll({
-            order: [['createdAt', 'DESC']]
+            order: [['createdAt', 'DESC']],
+            include: [
+                {
+                  model: admin_users,
+                  as: "admin",
+                  attributes: ["firstName", "lastName", "email", "role", "createdAt"]
+                }
+              ]
         })
         return res.status(200).json({
             message: 'Get jewellery successfully.',
@@ -103,6 +114,38 @@ const getJewellery = async (req, res) => {
         })
     }
 }
+
+const currentSellerJewellery = async (req, res) => {
+    try {
+      const admin_id = req.admin.admin_id; // 👈 current seller
+  
+      const jewellery = await jewelleryDetails.findAll({
+        order: [['createdAt', 'DESC']],
+        where: {
+          admin_id: admin_id   // 👈 filter 
+        },
+        include: [
+          {
+            model: admin_users,
+            as: "admin",
+            attributes: ["firstName", "lastName", "email", "role", "createdAt"]
+          }
+        ]
+      });
+  
+      return res.status(200).json({
+        success: true,
+        data: jewellery
+      });
+  
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        message: "Internal server error"
+      });
+    }
+  };
+  
 
 const deleteJewellery = async (req, res) => {
     const { product_id } = req.params;
@@ -127,7 +170,7 @@ const deleteJewellery = async (req, res) => {
         deleteFile(jewellery.video_url);
         deleteFile(jewellery.video_thumbnail_url);
 
-        await jewellery.destroy({
+        await jewelleryDetails.destroy({
             where: { product_id },
         });
 
@@ -243,4 +286,4 @@ const updateJewellery = async (req, res) => {
 
 
 
-module.exports = { addJewellery, getJewellery, deleteJewellery, updateJewellery }
+module.exports = { addJewellery, getJewellery, currentSellerJewellery, deleteJewellery, updateJewellery }

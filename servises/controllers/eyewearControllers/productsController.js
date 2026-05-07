@@ -1,8 +1,13 @@
-const registration = require('../../models/registration');
+// const registration = require('../../models/registration');
 const { Op, Sequelize } = require('sequelize');
-const products = require('../../models/eyewearModels/product');
+
+const db = require("../../models");
+const products = db.product;
+const admin_users = db.admin_users;
+
 const Specification = require('../../models/eyewearModels/specification')
 const offer = require('../../models/eyewearModels/offer')
+
 const multer = require('multer');
 const path = require('path');
 
@@ -79,6 +84,7 @@ const Addproduct = async (req, res) => {
             const data = await products.create({
 
                 // new update
+                admin_id: req.admin.admin_id,
                 product_all_img: allimagesUrls || '', // Empty if no image is uploaded
                 product_name: req.body.product_name || '', // Empty if not provided
                 product_title: req.body.product_title || '',
@@ -137,6 +143,10 @@ const getproduct = async (req, res) => {
                 {
                     model: offer, // Assuming you have a relationship between Products and Review
                 },
+                {
+                    model: admin_users, 
+                    as: "admin",
+                },
             ],
             order: [['createdAt', 'DESC']] // ✅ Newest product sabse upar
         });
@@ -152,6 +162,35 @@ const getproduct = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+const currentSellerEyewearProduct = async (req, res) => {
+    try {
+      const admin_id = req.admin.admin_id; // 👈 current seller
+  
+      const product = await products.findAll({
+        where: {
+          admin_id: admin_id   // 👈 filter 
+        },
+        include: [
+          {
+            model: admin_users,
+            as: "admin",
+          }
+        ]
+      });
+  
+      return res.status(200).json({
+        success: true,
+        result: product,
+      });
+  
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        message: "Internal server error"
+      });
+    }
+  };
 
 const newArrivel = async (req, res) => {
     try {
@@ -272,6 +311,7 @@ const productdetail = async (req, res) => {
         // });
 
         // Step 1: Try to find products with matching frem_type or lens_type
+        
         let suggestedProducts = await products.findAll({
             where: {
                 product_id: { [Op.ne]: productId },
@@ -547,7 +587,7 @@ const editProduct = async (req, res) => {
 };
 
 
-module.exports = { Addproduct, getproduct, newArrivel, productdetail, fillterData, productDeleteById, fillterDataget, fillterNewData, editProduct }
+module.exports = { Addproduct, getproduct, currentSellerEyewearProduct, newArrivel, productdetail, fillterData, productDeleteById, fillterDataget, fillterNewData, editProduct }
 
 // module.exports = { productsData, getAllData, fillterData, getDataById, productDeleteById, editProductById }
 

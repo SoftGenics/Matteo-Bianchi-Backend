@@ -2,7 +2,10 @@ const { Op, Sequelize } = require("sequelize");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const clothingDetails = require("../../models/clothingDetailModels/clothingDetail");
+
+const db = require('../../models');
+const clothingDetails = db.clothingDetails;
+const admin_users = db.admin_users;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -52,6 +55,7 @@ const addClothing = async (req, res) => {
 
     try {
       const clothing = await clothingDetails.create({
+        admin_id: req.admin.admin_id,
         main_category: req.body.main_category,
         sub_category: req.body.sub_category,
         product_name: req.body.product_name,
@@ -108,6 +112,12 @@ const getClothing = async (req, res) => {
   try {
     const clothing = await clothingDetails.findAll({
       order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: admin_users,
+          as: "admin",
+        }
+      ]
     });
 
     if (!clothing) {
@@ -120,6 +130,36 @@ const getClothing = async (req, res) => {
     });
   } catch (error) {
     console.error("Internal server error", error);
+  }
+};
+
+const currentSellerClothing = async (req, res) => {
+  try {
+    const admin_id = req.admin.admin_id; // 👈 current seller
+
+    const clothing = await clothingDetails.findAll({
+      order: [['createdAt', 'DESC']],
+      where: {
+        admin_id: admin_id   // 👈 filter lag gaya
+      },
+      include: [
+        {
+          model: admin_users,
+          as: "admin"
+        }
+      ]
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: clothing
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal server error"
+    });
   }
 };
 
@@ -151,7 +191,7 @@ const deleteClothing = async (req, res) => {
     deleteFile(clothing.video_url);
     deleteFile(clothing.video_thumbnail_url);
 
-    await clothing.destroy({ where: { product_id } });
+    await clothingDetails.destroy({ where: { product_id } });
 
     return res.status(200).json({
       message: "Clothing product deleted successfully.",
@@ -263,4 +303,4 @@ const updateClothing = async (req, res) => {
   });
 };
 
-module.exports = { addClothing, getClothing, deleteClothing, updateClothing };
+module.exports = { addClothing, getClothing, currentSellerClothing, deleteClothing, updateClothing };
