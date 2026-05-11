@@ -178,7 +178,7 @@ const getBags = async (req, res) => {
         {
           model: admin_users,
           as: "admin",
-          attributes: ["firstName", "lastName", "email", "role", "createdAt"]
+          attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
         }
       ]
     })
@@ -209,7 +209,7 @@ const currentSellerBags = async (req, res) => {
         {
           model: admin_users,
           as: "admin",
-          attributes: ["firstName", "lastName", "email", "role", "createdAt"]
+          attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
         }
       ]
     });

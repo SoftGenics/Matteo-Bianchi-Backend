@@ -97,11 +97,11 @@ const getJewellery = async (req, res) => {
             order: [['createdAt', 'DESC']],
             include: [
                 {
-                  model: admin_users,
-                  as: "admin",
-                  attributes: ["firstName", "lastName", "email", "role", "createdAt"]
+                    model: admin_users,
+                    as: "admin",
+                    attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
                 }
-              ]
+            ]
         })
         return res.status(200).json({
             message: 'Get jewellery successfully.',
@@ -117,35 +117,35 @@ const getJewellery = async (req, res) => {
 
 const currentSellerJewellery = async (req, res) => {
     try {
-      const admin_id = req.admin.admin_id; // 👈 current seller
-  
-      const jewellery = await jewelleryDetails.findAll({
-        order: [['createdAt', 'DESC']],
-        where: {
-          admin_id: admin_id   // 👈 filter 
-        },
-        include: [
-          {
-            model: admin_users,
-            as: "admin",
-            attributes: ["firstName", "lastName", "email", "role", "createdAt"]
-          }
-        ]
-      });
-  
-      return res.status(200).json({
-        success: true,
-        data: jewellery
-      });
-  
+        const admin_id = req.admin.admin_id; // 👈 current seller
+
+        const jewellery = await jewelleryDetails.findAll({
+            order: [['createdAt', 'DESC']],
+            where: {
+                admin_id: admin_id   // 👈 filter 
+            },
+            include: [
+                {
+                    model: admin_users,
+                    as: "admin",
+                    attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
+                }
+            ]
+        });
+
+        return res.status(200).json({
+            success: true,
+            data: jewellery
+        });
+
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        message: "Internal server error"
-      });
+        console.error(error);
+        return res.status(500).json({
+            message: "Internal server error"
+        });
     }
-  };
-  
+};
+
 
 const deleteJewellery = async (req, res) => {
     const { product_id } = req.params;

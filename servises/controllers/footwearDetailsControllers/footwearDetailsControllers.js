@@ -112,6 +112,7 @@ const getFootwear = async (req, res) => {
         {
           model: admin_users,
           as: "admin",
+          attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
         }
       ]
     })
@@ -140,7 +141,8 @@ const currentSellerFootwear = async (req, res) => {
       include: [
         {
           model: admin_users,
-          as: "admin"
+          as: "admin",
+          attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
         }
       ]
     });

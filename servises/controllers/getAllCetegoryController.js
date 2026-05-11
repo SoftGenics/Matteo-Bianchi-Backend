@@ -1,10 +1,21 @@
 const { Op } = require("sequelize");
-const Eyewear = require('../models/eyewearDetailsModels/eyewearDetails');
-const Jewellery = require('../models/jewelleryDetailsModels/jewelleryDetails');
-const Clothing = require("../models/clothingDetailModels/clothingDetail");
-const Footwear = require('../models/footwearDetailsModels/footwearDetails');
-const Purse = require('../models/bagsDetailsModels/bagsDetails');
-const Products = require('../models/eyewearModels/product');
+// const Eyewear = require('../models/eyewearDetailsModels/eyewearDetails');
+// const Jewellery = require('../models/jewelleryDetailsModels/jewelleryDetails');
+// const Clothing = require("../models/clothingDetailModels/clothingDetail");
+// const Footwear = require('../models/footwearDetailsModels/footwearDetails');
+// const Purse = require('../models/bagsDetailsModels/bagsDetails');
+// const Products = require('../models/eyewearModels/product');
+
+const db = require('../models');
+const Eyewear = db.eyewearDetails;
+const Jewellery = db.jewelleryDetails;
+const Clothing = db.clothingDetails;
+const Footwear = db.footwearDetails;
+const Purse = db.bagsDetails;
+const Products = db.product;
+
+const admin_users = db.admin_users;
+
 
 
 exports.getAllSearchCategory = async (req, res) => {
@@ -222,7 +233,16 @@ exports.getSingleProduct = async (req, res) => {
         const Model = modelMap[category];
 
         // --------- Step 1: Fetch Single Product ----------
-        const product = await Model.findOne({ where: { product_id } });
+        const product = await Model.findOne({
+            where: { product_id },
+            include: [
+                {
+                    model: admin_users,
+                    as: "admin",
+                    attributes: ["admin_id", "firstName", "lastName",  "email", "admin_status", "role", "createdAt"]
+                }
+            ]
+        });
 
         if (!product) {
             return res.status(404).json({

@@ -144,8 +144,9 @@ const getproduct = async (req, res) => {
                     model: offer, // Assuming you have a relationship between Products and Review
                 },
                 {
-                    model: admin_users, 
+                    model: admin_users,
                     as: "admin",
+                    attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
                 },
             ],
             order: [['createdAt', 'DESC']] // ✅ Newest product sabse upar
@@ -165,32 +166,33 @@ const getproduct = async (req, res) => {
 
 const currentSellerEyewearProduct = async (req, res) => {
     try {
-      const admin_id = req.admin.admin_id; // 👈 current seller
-  
-      const product = await products.findAll({
-        where: {
-          admin_id: admin_id   // 👈 filter 
-        },
-        include: [
-          {
-            model: admin_users,
-            as: "admin",
-          }
-        ]
-      });
-  
-      return res.status(200).json({
-        success: true,
-        result: product,
-      });
-  
+        const admin_id = req.admin.admin_id; // 👈 current seller
+
+        const product = await products.findAll({
+            where: {
+                admin_id: admin_id   // 👈 filter 
+            },
+            include: [
+                {
+                    model: admin_users,
+                    as: "admin",
+                    attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
+                }
+            ]
+        });
+
+        return res.status(200).json({
+            success: true,
+            result: product,
+        });
+
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        message: "Internal server error"
-      });
+        console.error(error);
+        return res.status(500).json({
+            message: "Internal server error"
+        });
     }
-  };
+};
 
 const newArrivel = async (req, res) => {
     try {
@@ -282,8 +284,17 @@ const productdetail = async (req, res) => {
         let product = await products.findOne({
             where: { product_id: productId },
             include: [
-                { model: Specification },
-                { model: offer },
+                {
+                    model: Specification
+                },
+                {
+                    model: offer
+                },
+                {
+                    model: admin_users,
+                    as: "admin",
+                    attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
+                }
             ],
         });
 
@@ -311,7 +322,7 @@ const productdetail = async (req, res) => {
         // });
 
         // Step 1: Try to find products with matching frem_type or lens_type
-        
+
         let suggestedProducts = await products.findAll({
             where: {
                 product_id: { [Op.ne]: productId },
