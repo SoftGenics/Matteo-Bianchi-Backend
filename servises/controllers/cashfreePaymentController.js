@@ -59,6 +59,11 @@ function generateOrderId() {
 // };
 
 
+
+
+
+
+
 // ============ cashfree localhost testing =============================
 
 // const cashfreePayment = async (req, res) => {
@@ -176,6 +181,11 @@ function generateOrderId() {
 //     });
 //   }
 // };
+
+
+
+
+
 
 
 // ===================== Cashfree start live payment ===================================
@@ -299,6 +309,12 @@ const cashfreeVerifyPayment = async (req, res) => {
 };
 // ===================== Cashfree start live payment end ===================================
 
+
+
+
+
+
+
 const cashfreeUpdateOrder = async (req, res) => {
   try {
     const { id } = req.params;
@@ -388,6 +404,7 @@ const cashfreeDetails = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+
 
 // const bestsellerProduct = async (req, res) => {
 //   try {

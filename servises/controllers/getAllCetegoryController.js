@@ -5,6 +5,7 @@ const { Op } = require("sequelize");
 // const Footwear = require('../models/footwearDetailsModels/footwearDetails');
 // const Purse = require('../models/bagsDetailsModels/bagsDetails');
 // const Products = require('../models/eyewearModels/product');
+const cashfreeModel = require("../models/cashfreeModel");
 
 const db = require('../models');
 const Eyewear = db.eyewearDetails;
@@ -211,6 +212,80 @@ exports.getLatestMixedProducts = async (req, res) => {
     }
 };
 
+exports.getMixedProducts = async (req, res) => {
+    try {
+        const commonInclude = [
+            {
+                model: admin_users,
+                as: "admin",
+                attributes: [
+                    "admin_id",
+                    "firstName",
+                    "lastName",
+                    "email",
+                    "admin_status",
+                    "role",
+                    "createdAt"
+                ]
+            }
+        ];
+
+        const [jewellery, clothing, footwear, purse, products] = await Promise.all([
+            
+            Jewellery.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Clothing.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Footwear.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Purse.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Products.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+        ]);
+
+        const addCategory = (data, categoryName) => {
+            return data.map((p) => ({
+                ...p.toJSON(),
+                category: categoryName,
+            }));
+        };
+
+        const allProducts = [
+            ...addCategory(jewellery, "jewellery"),
+            ...addCategory(clothing, "clothing"),
+            ...addCategory(footwear, "footwear"),
+            ...addCategory(purse, "purse"),
+            ...addCategory(products, "products"),
+        ];
+
+        res.status(200).json({
+            total: allProducts.length,
+            data: allProducts,
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong",
+            error
+        });
+    }
+};
 
 exports.getSingleProduct = async (req, res) => {
     const modelMap = {
@@ -286,5 +361,321 @@ exports.getSingleProduct = async (req, res) => {
     }
 };
 
+// exports.cashfreeSellerOder = async (req, res) => {
+//     try {
+//         const { email } = req.body;
+//         // console.log("email", email)
+//         const commonInclude = [
+//             {
+//                 model: admin_users,
+//                 as: "admin",
+//                 attributes: [
+//                     "admin_id",
+//                     "firstName",
+//                     "lastName",
+//                     "email",
+//                     "role",
+//                     "createdAt"
+//                 ]
+//             }
+//         ];
+
+//         const [jewellery, clothing, footwear, purse, products] = await Promise.all([
+
+//             Jewellery.findAll({
+//                 include: commonInclude,
+//                 order: [["createdAt", "DESC"]],
+//             }),
+
+//             Clothing.findAll({
+//                 include: commonInclude,
+//                 order: [["createdAt", "DESC"]],
+//             }),
+
+//             Footwear.findAll({
+//                 include: commonInclude,
+//                 order: [["createdAt", "DESC"]],
+//             }),
+
+//             Purse.findAll({
+//                 include: commonInclude,
+//                 order: [["createdAt", "DESC"]],
+//             }),
+
+//             Products.findAll({
+//                 include: commonInclude,
+//                 order: [["createdAt", "DESC"]],
+//             }),
+//         ]);
+
+//         // ✅ all products merge
+//         const allProduct = [
+//             ...jewellery,
+//             ...clothing,
+//             ...footwear,
+//             ...purse,
+//             ...products
+//         ];
+
+//         // all orders
+//         const orders = await cashfreeModel.findAll({
+//             order: [["createdAt", "DESC"]],
+//         });
+
+//         // current seller orders only
+//         const filteredOrders = orders.filter((order) => {
+
+//             const product = allProduct.find((item) => {
+
+//                 // category products
+//                 if (order.main_category) {
+
+//                     return (
+//                         String(item.product_id) === String(order.product_id) &&
+//                         String(item.main_category) === String(order.main_category) &&
+//                         item.admin?.email === email
+//                     );
+//                 }
+
+//                 // eyewear/products
+//                 return (
+//                     String(item.product_id) === String(order.product_id) &&
+//                     item.admin?.email === email
+//                 );
+//             });
+
+//             return !!product;
+//         });
+
+//         res.status(200).json(filteredOrders);
+
+//     } catch (error) {
+
+//         console.error("cashfreeSellerOder Error:", error);
+
+//         res.status(500).json({
+//             error: "Internal Server Error"
+//         });
+//     }
+// };
 
 
+exports.cashfreeSellerOder = async (req, res) => {
+    try {
+
+        const { email } = req.body;
+
+        const commonInclude = [
+            {
+                model: admin_users,
+                as: "admin",
+                attributes: [
+                    "admin_id",
+                    "firstName",
+                    "lastName",
+                    "email",
+                    "role",
+                    "createdAt"
+                ]
+            }
+        ];
+
+        const [jewellery, clothing, footwear, purse, products] = await Promise.all([
+
+            Jewellery.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Clothing.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Footwear.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Purse.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Products.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+        ]);
+
+        // all products merge
+        const allProduct = [
+            ...jewellery,
+            ...clothing,
+            ...footwear,
+            ...purse,
+            ...products
+        ];
+
+        // all orders
+        const orders = await cashfreeModel.findAll({
+            order: [["createdAt", "DESC"]],
+        });
+
+        // current seller orders only
+        const filteredOrders = orders.map((order) => {
+
+            const product = allProduct.find((item) => {
+
+                // category products
+                if (order.main_category) {
+
+                    return (
+                        String(item.product_id) === String(order.product_id) &&
+                        String(item.main_category) === String(order.main_category) &&
+                        item.admin?.email === email
+                    );
+                }
+
+                // eyewear/products
+                return (
+                    String(item.product_id) === String(order.product_id) &&
+                    item.admin?.email === email
+                );
+            });
+
+            // product not found
+            if (!product) return null;
+
+            // final response
+            return {
+                ...order.toJSON(),
+
+                admin: product.admin,
+
+                product_image: product.main_category
+                    ? product.thumbnail_url
+                    : product.product_thumnail_img
+            };
+        })
+        .filter(Boolean);
+
+        res.status(200).json(filteredOrders);
+
+    } catch (error) {
+
+        console.error("cashfreeSellerOder Error:", error);
+
+        res.status(500).json({
+            error: "Internal Server Error"
+        });
+    }
+};
+
+
+exports.cashfreeSellerAllOder = async (req, res) => {
+    try {
+
+        const commonInclude = [
+            {
+                model: admin_users,
+                as: "admin",
+                attributes: [
+                    "admin_id",
+                    "firstName",
+                    "lastName",
+                    "email",
+                    "role",
+                    "createdAt"
+                ]
+            }
+        ];
+
+        const [jewellery, clothing, footwear, purse, products] = await Promise.all([
+
+            Jewellery.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Clothing.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Footwear.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Purse.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Products.findAll({
+                include: commonInclude,
+                order: [["createdAt", "DESC"]],
+            }),
+        ]);
+
+        // all products merge
+        const allProduct = [
+            ...jewellery,
+            ...clothing,
+            ...footwear,
+            ...purse,
+            ...products
+        ];
+
+        // all orders
+        const orders = await cashfreeModel.findAll({
+            order: [["createdAt", "DESC"]],
+        });
+
+        // match orders with product
+        const filteredOrders = orders.map((order) => {
+
+            const product = allProduct.find((item) => {
+
+                // category products
+                if (order.main_category) {
+                    return (
+                        String(item.product_id) === String(order.product_id) &&
+                        String(item.main_category) === String(order.main_category)
+                    );
+                }
+
+                // eyewear/products
+                return (
+                    String(item.product_id) === String(order.product_id)
+                );
+            });
+
+            // agar product nahi mila
+            if (!product) return null;
+
+            // order + admin + image
+            return {
+                ...order.toJSON(),
+
+                admin: product.admin,
+
+                product_image: product.main_category
+                    ? product.thumbnail_url
+                    : product.product_thumnail_img
+            };
+        })
+        .filter(Boolean);
+
+        res.status(200).json(filteredOrders);
+
+    } catch (error) {
+
+        console.error("cashfreeSellerAllOder Error:", error);
+
+        res.status(500).json({
+            error: "Internal Server Error"
+        });
+    }
+};
