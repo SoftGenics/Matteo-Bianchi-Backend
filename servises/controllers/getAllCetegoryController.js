@@ -231,7 +231,7 @@ exports.getMixedProducts = async (req, res) => {
         ];
 
         const [jewellery, clothing, footwear, purse, products] = await Promise.all([
-            
+
             Jewellery.findAll({
                 include: commonInclude,
                 order: [["createdAt", "DESC"]],
@@ -314,7 +314,7 @@ exports.getSingleProduct = async (req, res) => {
                 {
                     model: admin_users,
                     as: "admin",
-                    attributes: ["admin_id", "firstName", "lastName",  "email", "admin_status", "role", "createdAt"]
+                    attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
                 }
             ]
         });
@@ -558,7 +558,7 @@ exports.cashfreeSellerOder = async (req, res) => {
                     : product.product_thumnail_img
             };
         })
-        .filter(Boolean);
+            .filter(Boolean);
 
         res.status(200).json(filteredOrders);
 
@@ -666,13 +666,104 @@ exports.cashfreeSellerAllOder = async (req, res) => {
                     : product.product_thumnail_img
             };
         })
-        .filter(Boolean);
+            .filter(Boolean);
 
         res.status(200).json(filteredOrders);
 
     } catch (error) {
 
         console.error("cashfreeSellerAllOder Error:", error);
+
+        res.status(500).json({
+            error: "Internal Server Error"
+        });
+    }
+};
+
+exports.cashfreeUserOder = async (req, res) => {
+    try {
+
+        let { mobile_number } = req.body;
+
+        // Remove all spaces
+        mobile_number = String(mobile_number).replace(/\s/g, "");
+
+        const [jewellery, clothing, footwear, purse, products] = await Promise.all([
+
+            Jewellery.findAll({
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Clothing.findAll({
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Footwear.findAll({
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Purse.findAll({
+                order: [["createdAt", "DESC"]],
+            }),
+
+            Products.findAll({
+                order: [["createdAt", "DESC"]],
+            }),
+        ]);
+
+        // all products merge
+        const allProduct = [
+            ...jewellery,
+            ...clothing,
+            ...footwear,
+            ...purse,
+            ...products
+        ];
+
+        // all orders
+        const orders = await cashfreeModel.findAll({
+            where: { mobile_number },
+            order: [["createdAt", "DESC"]],
+        });
+
+        // current seller orders only
+        const filteredOrders = orders.map((order) => {
+
+            const product = allProduct.find((item) => {
+
+                // category products
+                if (order.main_category) {
+
+                    return (
+                        String(item.product_id) === String(order.product_id) &&
+                        String(item.main_category) === String(order.main_category)
+                    );
+                }
+
+                // eyewear/products
+                return (
+                    String(item.product_id) === String(order.product_id)
+                );
+            });
+
+            // product not found
+            if (!product) return null;
+
+            // final response
+            return {
+                ...order.toJSON(),
+                product_image: product.main_category
+                    ? product.thumbnail_url
+                    : product.product_thumnail_img,
+                product_title: product.main_category ? product.product_name : product.product_title
+            };
+        }).filter(Boolean);
+
+        res.status(200).json(filteredOrders);
+
+    } catch (error) {
+
+        console.error("cashfreeSellerOder Error:", error);
 
         res.status(500).json({
             error: "Internal Server Error"

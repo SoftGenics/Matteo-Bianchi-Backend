@@ -12,5 +12,6 @@ route.get("/product/:category/:product_id", getAllCetegoryController.getSinglePr
 
 route.post("/cashfree/all/SellerOder", getAllCetegoryController.cashfreeSellerOder);
 route.get("/cashfree/all/seller/oder/product", getAllCetegoryController.cashfreeSellerAllOder);
+route.post("/cashfree/all/UserOder", getAllCetegoryController.cashfreeUserOder);
 
 module.exports = route;

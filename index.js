@@ -40,6 +40,7 @@ const trackShipment = require('./servises/routes/trackShipment')
 const cashfreePayment = require('./servises/routes/cashfreePayment')
 const getAllCetegory = require('./servises/routes/getAllCetegoryRoutes')
 const adminUser = require('./servises/routes/adminUserRoutes/adminUsersRoute')
+const shiprocket = require('./servises/routes/shiproketOrder')
 
 
 testDbConnection();
@@ -125,6 +126,7 @@ app.use('/api/payment', lenskartPayment);
 app.use('/api/tracking', trackShipment);
 app.use('/api', cashfreePayment)
 app.use('/api', adminUser)
+app.use('/shiprocket', shiprocket)
 
 
 app.get('/hello', (req, res) => {
