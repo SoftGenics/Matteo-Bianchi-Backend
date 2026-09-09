@@ -61,8 +61,14 @@ const addJewellery = async (req, res) => {
                 video_url: video_url,
                 video_thumbnail_url: video_thumbnail_url,
                 stock_status: req.body.stock_status,
+
+                Flipkart: req.body.Flipkart?.trim() || null,
+                Amazon: req.body.Amazon?.trim() || null,
+                Flipkart_btn_name: req.body.Flipkart_btn_name?.trim() || null,
+                Amazon_btn_name: req.body.Amazon_btn_name?.trim() || null,
                 rating: req.body.rating,
                 total_reviews: req.body.total_reviews,
+
                 material_type: req.body.material_type,
                 stone_type: req.body.stone_type,
                 weight: req.body.weight,
@@ -257,8 +263,14 @@ const updateJewellery = async (req, res) => {
                 discount_percent: req.body.discount_percent || jewellery.discount_percent,
                 description: req.body.description || jewellery.description,
                 stock_status: req.body.stock_status || jewellery.stock_status,
+
+                Flipkart: req.body.Flipkart || jewellery.Flipkart,
+                Amazon: req.body.Amazon || jewellery.Amazon,
+                Flipkart_btn_name: req.body.Flipkart_btn_name || jewellery.Flipkart_btn_name,
+                Amazon_btn_name: req.body.Amazon_btn_name || jewellery.Amazon_btn_name,
                 rating: req.body.rating || jewellery.rating,
                 total_reviews: req.body.total_reviews || jewellery.total_reviews,
+
                 material_type: req.body.material_type || jewellery.material_type,
                 stone_type: req.body.stone_type || jewellery.stone_type,
                 weight: req.body.weight || jewellery.weight,

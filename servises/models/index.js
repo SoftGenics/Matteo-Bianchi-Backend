@@ -5,6 +5,7 @@ const eyewearDetails = require('./eyewearDetailsModels/eyewearDetails')
 const product = require("./eyewearModels/product");
 const footwearDetails = require("./footwearDetailsModels/footwearDetails");
 const clothingDetails = require("./clothingDetailModels/clothingDetail");
+const Cart = require("./cart");
 
 const db = {};
 
@@ -15,6 +16,7 @@ db.product = product;
 db.eyewearDetails = eyewearDetails;
 db.footwearDetails = footwearDetails;
 db.clothingDetails = clothingDetails;
+db.Cart = Cart;
 
 // 🔥 RUN ASSOCIATIONS
 Object.values(db).forEach((model) => {

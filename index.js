@@ -41,6 +41,9 @@ const cashfreePayment = require('./servises/routes/cashfreePayment')
 const getAllCetegory = require('./servises/routes/getAllCetegoryRoutes')
 const adminUser = require('./servises/routes/adminUserRoutes/adminUsersRoute')
 const shiprocket = require('./servises/routes/shiproketOrder')
+const bargain = require('./servises/routes/bargainRoutes/bargains')
+const productLink = require('./servises/routes/productLinkRoutes/productLink')
+const addtocart = require('./servises/routes/cartRoutes')
 
 
 testDbConnection();
@@ -127,6 +130,9 @@ app.use('/api/tracking', trackShipment);
 app.use('/api', cashfreePayment)
 app.use('/api', adminUser)
 app.use('/shiprocket', shiprocket)
+app.use('/api', bargain)
+app.use('/api', productLink)
+app.use('/api', addtocart)
 
 
 app.get('/hello', (req, res) => {

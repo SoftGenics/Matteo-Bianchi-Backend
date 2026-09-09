@@ -1,20 +1,24 @@
 const { DataTypes } = require("sequelize");
 const { database } = require("../../connection/database")
 
-const ExtraOffers = database.define("ExtraOffers", {
-  category: {
+const extraOffers = database.define("extraOffers", {
+  main_category: {
     type: DataTypes.ENUM(
-      "Eyewear",
-      "Footwear",
-      "Jewellery",
-      "Bags",
-      "Clothing"
+      "products",
+      "footwear",
+      "jewellery",
+      "purse",
+      "clothings"
     ),
     allowNull: false,
-    unique: true,
   },
 
   max_discount_percent: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+
+  attempt_limit: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -23,11 +27,11 @@ const ExtraOffers = database.define("ExtraOffers", {
     type: DataTypes.INTEGER,
     defaultValue: 20,
   },
-  
+
   status: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
   },
 });
 
-module.exports = ExtraOffers;
+module.exports = extraOffers;

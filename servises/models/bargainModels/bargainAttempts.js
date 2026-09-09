@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { database } = require("../../connection/database")
 
-const BargainAttempts = database.define("BargainAttempts",
+const bargainAttempts = database.define("BargainAttempts",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -12,6 +12,11 @@ const BargainAttempts = database.define("BargainAttempts",
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: "registrations",   // registration table 
+        key: "user_id"
+      },
+      onDelete: "CASCADE"
     },
 
     product_id: {
@@ -21,11 +26,11 @@ const BargainAttempts = database.define("BargainAttempts",
 
     main_category: {
       type: DataTypes.ENUM(
-        "Eyewear",
-        "Footwear",
-        "Jewellery",
-        "Purse",
-        "Clothing"
+        "products",
+        "footwear",
+        "jewellery",
+        "purse",
+        "clothings"
       ),
       allowNull: false,
     },
@@ -52,4 +57,13 @@ const BargainAttempts = database.define("BargainAttempts",
   },
 );
 
-module.exports = BargainAttempts;
+bargainAttempts.associate = (models) => {
+
+  bargainAttempts.belongsTo(models.registration, {
+    foreignKey: "user_id",
+    as: "user"
+  });
+
+};
+
+module.exports = bargainAttempts;

@@ -79,11 +79,34 @@ const eyewearDetails = database.define("eyewearDetails", {
         type: DataTypes.STRING,
         allowNull: false
     },
+
+    power: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    Flipkart: {
+        type: DataTypes.STRING,
+    },
+    Amazon: {
+        type: DataTypes.STRING,
+    },
+    Flipkart_btn_name: {
+        type: DataTypes.STRING,
+    },
+    Amazon_btn_name: {
+        type: DataTypes.STRING,
+    },
     rating: {
         type: DataTypes.FLOAT
     },
     total_reviews: {
         type: DataTypes.INTEGER
+    },
+
+    eyewear_category: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "Sunglasses"
     },
 
     frame_type: {

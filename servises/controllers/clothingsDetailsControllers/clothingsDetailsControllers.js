@@ -71,6 +71,11 @@ const addClothing = async (req, res) => {
         video_url: video_url,
         video_thumbnail_url: video_thumbnail_url,
         stock_status: req.body.stock_status,
+
+        Flipkart: req.body.Flipkart?.trim() || null,
+        Amazon: req.body.Amazon?.trim() || null,
+        Flipkart_btn_name: req.body.Flipkart_btn_name?.trim() || null,
+        Amazon_btn_name: req.body.Amazon_btn_name?.trim() || null,
         rating: req.body.rating,
         total_reviews: req.body.total_reviews,
         size: JSON.parse(req.body.size),
@@ -272,13 +277,15 @@ const updateClothing = async (req, res) => {
         price: req.body.price || clothing.price,
         discount_percent: req.body.discount_percent || clothing.discount_percent,
         description: req.body.description || clothing.description,
-
         images: images,
         thumbnail_url: thumbnail_url,
         video_url: video_url,
         video_thumbnail_url: video_thumbnail_url,
-
         stock_status: req.body.stock_status || clothing.stock_status,
+        Flipkart: req.body.Flipkart || clothing.Flipkart,
+        Amazon: req.body.Amazon || clothing.Amazon,
+        Flipkart_btn_name: req.body.Flipkart_btn_name || clothing.Flipkart_btn_name,
+        Amazon_btn_name: req.body.Amazon_btn_name || clothing.Amazon_btn_name,
         rating: req.body.rating || clothing.rating,
         total_reviews: req.body.total_reviews || clothing.total_reviews,
 

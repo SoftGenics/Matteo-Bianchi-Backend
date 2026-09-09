@@ -16,7 +16,7 @@ const registration = database.define('registration', {
   mobile_num: {
     type: DataTypes.STRING,
     allowNull: false,
-    // unique: true,
+    unique: true,
   },
   email_id: {
     type: DataTypes.STRING,
@@ -28,5 +28,14 @@ const registration = database.define('registration', {
     type: DataTypes.DATE,
   },
 });
+
+registration.associate = (models) => {
+  registration.hasMany(models.bargainAttempts, {
+      foreignKey: "user_id",
+      as: "bargainAttempts",
+      onDelete: "CASCADE",
+      hooks: true
+  });
+};
 
 module.exports = registration;

@@ -46,6 +46,7 @@ const addEyewear = async (req, res) => {
         const video_thumbnail_url = videoThumbnailFile ? `uploads/${videoThumbnailFile.filename}` : null;
         try {
             const eyewear = await eyewearDetails.create({
+                admin_id: req.admin.admin_id,
                 main_category: req.body.main_category,
                 sub_category: req.body.sub_category,
                 product_name: req.body.product_name,
@@ -61,6 +62,11 @@ const addEyewear = async (req, res) => {
                 video_url: video_url,
                 video_thumbnail_url: video_thumbnail_url,
                 stock_status: req.body.stock_status,
+
+                Flipkart: req.body.Flipkart?.trim() || null,
+                Amazon: req.body.Amazon?.trim() || null,
+                Flipkart_btn_name: req.body.Flipkart_btn_name?.trim() || null,
+                Amazon_btn_name: req.body.Amazon_btn_name?.trim() || null,
                 rating: req.body.rating,
                 total_reviews: req.body.total_reviews,
 
@@ -221,15 +227,21 @@ const updateEyewear = async (req, res) => {
                 brand_name: req.body.brand_name || eyewear.brand_name,
                 color: req.body.color || eyewear.color,
                 price: req.body.price || eyewear.price,
-                images,
-                thumbnail_url,
-                video_url,
-                video_thumbnail_url,
+                images: images,
+                thumbnail_url: thumbnail_url,
+                video_url: video_url,
+                video_thumbnail_url: video_thumbnail_url,
                 discount_percent: req.body.discount_percent || eyewear.discount_percent,
                 description: req.body.description || eyewear.description,
                 stock_status: req.body.stock_status || eyewear.stock_status,
+                Flipkart: req.body.Flipkart || eyewear.Flipkart,
+                Amazon: req.body.Amazon || eyewear.Amazon,
+                Flipkart_btn_name: req.body.Flipkart_btn_name || eyewear.Flipkart_btn_name,
+                Amazon_btn_name: req.body.Amazon_btn_name || eyewear.Amazon_btn_name,
+                power: req.body.power ?? eyewear.power,
                 rating: req.body.rating || eyewear.rating,
                 total_reviews: req.body.total_reviews || eyewear.total_reviews,
+
                 frame_type: req.body.frame_type || eyewear.frame_type,
                 material_type: req.body.material_type || eyewear.material_type,
                 lens_power: req.body.lens_power || eyewear.lens_power,
@@ -243,7 +255,7 @@ const updateEyewear = async (req, res) => {
                 data: eyewear
             })
         } catch (error) {
-            console.error("Update Jewellery Failed:", error);
+            console.error("Update Eyewear Failed:", error);
             return res.status(500).json({
                 message: "Internal Server Error.",
                 error: error.message,

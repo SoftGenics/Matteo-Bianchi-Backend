@@ -37,7 +37,7 @@ const login = async (req, res) => {
       const token = generateJWT(mobile_num, otp);
 
       // Save the new user in the database
-      await registration.create({
+      const newExistUser = await registration.create({
         name: 'GUEST',
         mobile_num: mobile_num,
         email_id: null,
@@ -45,14 +45,20 @@ const login = async (req, res) => {
         dob: null,
       });
 
+
       const smsResponse = await sendOTP(mobile_num, otp);
 
       if (smsResponse) {
         // OTP sent successfully
-        console.log('OTP is successfully sent', otp, token);
+        console.log('OTP is successfully sent', otp);
 
+        const user_token = jwt.sign({ user_id: newExistUser.user_id }, process.env.JWT_SECRET, { expiresIn: "60d" })
+        
         return res.status(200).send({
-          otp, token: token, status: 'true'
+          otp,
+          token: token,
+          user_token: user_token,
+          status: 'true'
         });
       } else {
         // Failed to send OTP via SMS
@@ -69,9 +75,15 @@ const login = async (req, res) => {
         // OTP sent successfully
         console.log('OTP is successfully sent', otp);
 
+        const user_token = jwt.sign({ user_id: existingUser.user_id }, process.env.JWT_SECRET, { expiresIn: "60d" })
+  
         return res.status(200).send({
-          otp, token: token, status: 'true'
+          otp,
+          token: token,
+          user_token: user_token,
+          status: 'true'
         });
+        
       } else {
         // Failed to send OTP via SMS
         res.status(500).json({ message: 'Failed to send OTP via SMS' });

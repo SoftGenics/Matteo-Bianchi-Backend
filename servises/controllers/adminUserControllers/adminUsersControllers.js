@@ -56,12 +56,14 @@ const login = async (req, res) => {
             return res.status(404).json({ success: false, message: "Wrong Password!" })
         }
         const admin_access_token = jwt.sign({ admin_id: existingUser.admin_id }, process.env.JWT_SECRET, { expiresIn: "60d" })
+
         res.cookie(`admin_access_token`, admin_access_token, {
             httpOnly: true,
             secure: false, // production me true
             maxAge: 60 * 24 * 60 * 60 * 1000, // 60 days
             // sameSite: "strict", 
         })
+        
         return res.status(200).json({ user: existingUser, success: true, message: "User login Successfully!", admin_access_token })
 
     } catch (error) {

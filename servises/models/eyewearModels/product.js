@@ -153,6 +153,28 @@ const products = database.define('products', {
         allowNull: true,
     },
 
+    Flipkart: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    Amazon: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    Flipkart_btn_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    Amazon_btn_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+
+    power: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+
     createdAt: {
         type: DataTypes.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'), // Set the default value to the current timestamp

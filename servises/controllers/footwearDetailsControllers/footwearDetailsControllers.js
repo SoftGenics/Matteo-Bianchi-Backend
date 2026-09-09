@@ -69,6 +69,13 @@ const addFootwear = async (req, res) => {
         video_url: video_url,
         video_thumbnail_url: video_thumbnail_url,
         stock_status: req.body.stock_status,
+        
+        Flipkart: req.body.Flipkart?.trim() || null,
+        Amazon: req.body.Amazon?.trim() || null,
+        Flipkart_btn_name: req.body.Flipkart_btn_name?.trim() || null,
+        Amazon_btn_name: req.body.Amazon_btn_name?.trim() || null,
+        
+        rating: req.body.rating,
         rating: req.body.rating,
         total_reviews: req.body.total_reviews,
 
@@ -269,6 +276,10 @@ const updateFootwear = async (req, res) => {
         video_url: video_url,
         video_thumbnail_url: video_thumbnail_url,
         stock_status: req.body.stock_status || footwear.stock_status,
+        Flipkart: req.body.Flipkart|| footwear.Flipkart,
+        Amazon: req.body.Amazon|| footwear.Amazon,
+        Flipkart_btn_name: req.body.Flipkart_btn_name || footwear.Flipkart_btn_name,
+        Amazon_btn_name: req.body.Amazon_btn_name || footwear.Amazon_btn_name,
         rating: req.body.rating || footwear.rating,
         total_reviews: req.body.total_reviews || footwear.total_reviews,
 

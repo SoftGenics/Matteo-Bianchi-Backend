@@ -117,6 +117,11 @@ const Addproduct = async (req, res) => {
                 lensInformation: req.body.lensInformation || '',
                 frameMaterial: req.body.frameMaterial || '',
                 templeColor: req.body.templeColor || '',
+                Flipkart: req.body.Flipkart,
+                Amazon: req.body.Amazon,
+                Flipkart_btn_name: req.body.Flipkart_btn_name || '',
+                Amazon_btn_name: req.body.Amazon_btn_name || '',
+                power: req.body.power ?? false,
 
                 // ✅ Add these
                 video_url: videoUrl,
@@ -563,6 +568,11 @@ const editProduct = async (req, res) => {
             product_price,
             count_in_stock,
             discount,
+            Flipkart,
+            Amazon,
+            Flipkart_btn_name,
+            Amazon_btn_name,
+            power,
             color
         } = req.body; // Get fields to update from the request body
 
@@ -586,11 +596,16 @@ const editProduct = async (req, res) => {
             frem_type: frem_type || product.frem_type,
             gender: gender || product.gender,
             discount: discount || product.discount,
+            Flipkart: Flipkart || product.Flipkart,
+            Amazon: Amazon || product.Amazon,
+            Flipkart_btn_name: Flipkart_btn_name || product.Flipkart_btn_name,
+            Amazon_btn_name: Amazon_btn_name || product.Amazon_btn_name,
+            power: power ?? product.power
         });
 
         // Respond with the updated product details
         return res.status(200).json({ message: 'Product updated successfully', data: product });
-        // return res.status(200).json({ message: 'Product updated successfully' });
+        
     } catch (error) {
         console.error('Error editing product:', error);
         return res.status(500).json({ error: 'Internal server error' });

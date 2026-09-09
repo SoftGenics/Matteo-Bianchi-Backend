@@ -77,6 +77,22 @@ const bagsDetails = database.define("bagsDetails", {
         type: DataTypes.STRING,
         allowNull: false
     },
+    Flipkart: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    Amazon: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    Flipkart_btn_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    Amazon_btn_name: { 
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     rating: {
         type: DataTypes.FLOAT
     },

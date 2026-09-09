@@ -83,6 +83,19 @@ const footwearDetails = database.define("footwearDetails", {
   total_reviews: {
     type: DataTypes.INTEGER
   },
+  Flipkart: {
+    type: DataTypes.STRING,
+  },
+  Amazon: {
+    type: DataTypes.STRING,
+  },
+  Flipkart_btn_name: {
+    type: DataTypes.STRING,
+  },
+  Amazon_btn_name: {
+    type: DataTypes.STRING,
+  },
+
 
   material_type: {
     type: DataTypes.STRING,

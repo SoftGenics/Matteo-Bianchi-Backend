@@ -135,6 +135,11 @@ const addBags = async (req, res) => {
         thumbnail_url: thumbnail_url,
         video_url: video_url,
         video_thumbnail_url: video_thumbnail_url,
+
+        Flipkart: req.body.Flipkart?.trim() || null,
+        Amazon: req.body.Amazon?.trim() || null,
+        Flipkart_btn_name: req.body.Flipkart_btn_name?.trim() || null,
+        Amazon_btn_name: req.body.Amazon_btn_name?.trim() || null,
         stock_status: req.body.stock_status,
         rating: req.body.rating,
         total_reviews: req.body.total_reviews,
@@ -556,6 +561,7 @@ const updateBags = async (req, res) => {
       deleteFileIfReplaced(bags.thumbnail_url, thumbnail_url);
       deleteFileIfReplaced(bags.video_url, video_url);
       deleteFileIfReplaced(bags.video_thumbnail_url, video_thumbnail_url);
+
       await bags.update({
         main_category: req.body.main_category || bags.main_category,
         sub_category: req.body.sub_category || bags.sub_category,
@@ -572,6 +578,11 @@ const updateBags = async (req, res) => {
         video_url: video_url,
         video_thumbnail_url: video_thumbnail_url,
         stock_status: req.body.stock_status || bags.stock_status,
+
+        Flipkart: req.body.Flipkart || bags.Flipkart,
+        Amazon: req.body.Amazon || bags.Amazon,
+        Flipkart_btn_name: req.body.Flipkart_btn_name || bags.Flipkart_btn_name,
+        Amazon_btn_name: req.body.Amazon_btn_name || bags.Amazon_btn_name,
         rating: req.body.rating || bags.rating,
         total_reviews: req.body.total_reviews || bags.total_reviews,
         material_type: req.body.material_type || bags.material_type,
