@@ -8,7 +8,8 @@ const extraOffers = database.define("extraOffers", {
       "footwear",
       "jewellery",
       "purse",
-      "clothings"
+      "clothings",
+      "eyewear"
     ),
     allowNull: false,
   },

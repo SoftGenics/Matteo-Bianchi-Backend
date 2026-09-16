@@ -30,7 +30,8 @@ const bargainAttempts = database.define("BargainAttempts",
         "footwear",
         "jewellery",
         "purse",
-        "clothings"
+        "clothings",
+        "eyewear"
       ),
       allowNull: false,
     },

@@ -15,7 +15,7 @@ const Eyewear = db.eyewearDetails;
 
 // 🔥 Category ke according model
 const categoryModels = {
-    bags: Bags,
+    purse: Bags,
     jewellery: Jewellery,
     footwear: Footwear,
     clothing: Clothing,

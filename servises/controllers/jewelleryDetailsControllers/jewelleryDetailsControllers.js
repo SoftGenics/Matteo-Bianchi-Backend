@@ -99,7 +99,20 @@ const addJewellery = async (req, res) => {
 
 const getJewellery = async (req, res) => {
     try {
+        const { sub_category, product_name } = req.query;
+
+        const where = {};
+
+        if (sub_category) {
+            where.sub_category = sub_category.toLowerCase();
+        }
+
+        if (product_name) {
+            where.product_name = product_name.toLowerCase();
+        }
+
         const jewellery = await jewelleryDetails.findAll({
+            where,
             order: [['createdAt', 'DESC']],
             include: [
                 {

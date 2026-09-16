@@ -2,7 +2,10 @@ const { Op, Sequelize } = require('sequelize');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const eyewearDetails = require('../../models/eyewearDetailsModels/eyewearDetails')
+
+const db = require('../../models');
+const eyewearDetails = db.eyewearDetails;
+const admin_users = db.admin_users;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -67,6 +70,7 @@ const addEyewear = async (req, res) => {
                 Amazon: req.body.Amazon?.trim() || null,
                 Flipkart_btn_name: req.body.Flipkart_btn_name?.trim() || null,
                 Amazon_btn_name: req.body.Amazon_btn_name?.trim() || null,
+                eyewear_category: req.body.eyewear_category || "Sunglasses",
                 rating: req.body.rating,
                 total_reviews: req.body.total_reviews,
 
@@ -105,8 +109,28 @@ const addEyewear = async (req, res) => {
 
 const getEyewear = async (req, res) => {
     try {
+        const { sub_category, eyewear_category } = req.query;
+        console.log("sub_category:", sub_category, "eyewear_category:", eyewear_category);
+        const where = {};
+
+        if (sub_category) {
+            where.sub_category = sub_category;
+        }
+
+        if (eyewear_category) {
+            where.eyewear_category = eyewear_category;
+        }
+
         const eyewear = await eyewearDetails.findAll({
-            order: [['createdAt', 'DESC']]
+            where,
+            order: [['createdAt', 'DESC']],
+            include: [
+                {
+                    model: admin_users,
+                    as: "admin",
+                    attributes: ["admin_id", "firstName", "lastName", "email", "admin_status", "role", "createdAt"]
+                }
+            ]
         })
         if (!eyewear) {
             return res.status(404).json({
@@ -239,6 +263,7 @@ const updateEyewear = async (req, res) => {
                 Flipkart_btn_name: req.body.Flipkart_btn_name || eyewear.Flipkart_btn_name,
                 Amazon_btn_name: req.body.Amazon_btn_name || eyewear.Amazon_btn_name,
                 power: req.body.power ?? eyewear.power,
+                eyewear_category: req.body.eyewear_category || eyewear.eyewear_category,
                 rating: req.body.rating || eyewear.rating,
                 total_reviews: req.body.total_reviews || eyewear.total_reviews,
 
